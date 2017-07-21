@@ -1,16 +1,22 @@
 app.controller('NavBarController', ['$scope', function ($scope) {
 
     $scope.toogleStreamName = 'Stop';
-    $scope.toogleClass = 'danger';
+    $scope.toogle = false;
 
     $scope.toogleStream = function () {
         if ($scope.toogleStreamName === 'Stop') {
             $scope.toogleStreamName = 'Start';
-            $scope.toogleClass = 'success';
+            $scope.toogle = true;
+
+            $scope.$emit('stop', {})
+
         }
         else {
             $scope.toogleStreamName = 'Stop';
-            $scope.toogleClass = 'danger';
+            $scope.toogle = false;
+
+            $scope.$emit('start', {})
+
         }
     }
 }]);

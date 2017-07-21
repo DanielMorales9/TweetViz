@@ -7,4 +7,12 @@ app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
     socket.on('tweet', function(data) {
         $scope.$broadcast('tweet', data);
     });
+
+    $scope.$on('start', function(event, data) {
+        socket.emit('start', { room: 'map' });
+    });
+
+    $scope.$on('stop', function(event, data) {
+        socket.emit('stop', {});
+    });
 }]);

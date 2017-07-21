@@ -29,6 +29,16 @@ module.exports = function(io) {
 
     };
 
+    function leaveRoom(socket, r) {
+        socket.leave(r);
+        //se non c'è nessuno nella room spegni lo stream della room
+        if (!io.sockets.adapter.rooms[r]) {
+            tweetMgr[r].stop();
+            console.log("tweet stream deleted", r);
+            delete tweetMgr[r];
+        }
+    }
+
     io.on('connection', function (socket) {
         socket.on('start', function (event) {
 
@@ -46,25 +56,22 @@ module.exports = function(io) {
         socket.on('disconnect', function(event) {
             var r = socket_rooms[socket.id];
             if (r) {
-                //se non c'è nessuno nella room spegni lo stream della room
-                if (!io.sockets.adapter.rooms[r]) {
-                    tweetMgr[r].stop();
-                    console.log("tweet stream deleted", r);
-                    delete tweetMgr[r];
-                }
+               leaveRoom(socket, r)
+            }
+            delete socket_rooms[socket.id];
+        });
+
+        socket.on('stop', function(event) {
+            var r = socket_rooms[socket.id];
+            if (r) {
+                leaveRoom(socket, r);
             }
             delete socket_rooms[socket.id];
         });
 
         socket.on('bbox', function (event) {
             for (var r in socket.rooms)
-                socket.leave(r);
-
-                if (!io.sockets.adapter.rooms[r]) {
-                    tweetMgr[r].stop();
-                    console.log("tweet stream deleted", r);
-                    delete tweetMgr[r];
-                }
+                leaveRoom(socket, r)
 
             var topic = "bbox";
             var location = event.coords.join(",");
