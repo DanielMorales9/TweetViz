@@ -18,6 +18,7 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.2.0/ol.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="lib/socket.io.slim.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
@@ -45,14 +46,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
                     </li-->
-                    <li >
-                        <button ng-class="{'btn btn-outline-danger' : !toogleSearchColor,  'btn btn-outline-success': toogleSearchColor}" type="button" ng-click="toogleSearch()">{{toogleSearchName}}</button>
+                    <li>
+                        <button ng-class="{'btn btn-outline-danger' : !toogleDrawColor,  'btn btn-outline-success': toogleDrawColor}"
+                                type="button" ng-click="toogleDraw()">{{toogleDrawName}}
+                        </button>
                     </li>
 
                 </ul>
 
                 <form class="form-inline">
-                    <button ng-class="{'btn btn-outline-danger' : !toogleStreamColor,  'btn btn-outline-success': toogleStreamColor}" type="button" ng-click="toogleStream()">{{toogleStreamName}}</button>
+                    <button ng-class="{'btn btn-outline-danger' : !toogleStreamColor,  'btn btn-outline-success': toogleStreamColor}"
+                            type="button" ng-click="toogleStream()">{{toogleStreamName}}
+                    </button>
                 </form>
                 <!--form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
@@ -65,7 +70,9 @@
         <div ng-controller="MapController" id="map" class="col-9" tabindex="0"></div>
         <div ng-controller="SideBarController" id="side" class="col-3"></div>
     </div>
-    <div id="popup"></div>
-</div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
 </body>
 </html>
