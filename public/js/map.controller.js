@@ -113,7 +113,8 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     });
 
     var popup = new ol.Overlay({
-        element: document.getElementById('popup')
+        element: document.getElementById('popup'),
+        autoPan : true
     });
     map.addOverlay(popup);
 
