@@ -53,7 +53,7 @@ app.controller('MapController', ['socket', function(socket) {
 
     socket.emit('start', { room: 'map' });
     socket.on('tweet', function(data) {
-        console.log(data);
+        //console.log(data);
 
         var point_feature = new ol.Feature({ });
         var point_geom = new ol.geom.Point(
@@ -85,22 +85,96 @@ app.controller('MapController', ['socket', function(socket) {
     //setTimeout(trigger, 3000);
 
 
-    var source = new ol.source.Vector({wrapX: false});
+//    var source = new ol.source.Vector({wrapX: false});
+//
+//    var draw_vector = new ol.layer.Vector({
+//        source: source
+//    });
+//    map.addLayer(draw_vector);
+//    var geometryFunction = ol.interaction.Draw.createBox();
+//    var draw = new ol.interaction.Draw({
+//        source: vector_layer.getSource(),
+//        type: /** @type {ol.geom.GeometryType} */  'Box',
+//        geometryFunction: geometryFunction
+//    });
+//    map.addInteraction(draw);
+//
+//    draw.on('drawend', function(evt) {
+//
+//        console.log(evt.feature.getGeometry().getCoordinates())
+//    })
 
-    var draw_vector = new ol.layer.Vector({
-        source: source
+
+    var selectPointerMove = new ol.interaction.Select({
+        condition: ol.events.condition.pointerMove
     });
-    map.addLayer(draw_vector);
-    var geometryFunction = ol.interaction.Draw.createBox();
-    var draw = new ol.interaction.Draw({
-        source: vector_layer.getSource(),
-        type: /** @type {ol.geom.GeometryType} */ 'Box',
-        geometryFunction: geometryFunction
+
+    // select interaction working on "click"
+    var selectClick = new ol.interaction.Select({
+        condition: ol.events.condition.click
     });
-    map.addInteraction(draw);
 
-    draw.on('drawend', function(evt) {
+    var popup = new ol.Overlay({
+        element: document.getElementById('popup')
+    });
+    map.addOverlay(popup);
 
-        console.log(evt.feature.getGeometry().getCoordinates())
-    })
+    map.addInteraction(selectPointerMove);
+
+    selectPointerMove.on('select', function (e) {
+       console.log(e);
+
+       console.log(e.mapBrowserEvent.pixel)
+       var coordinate = e.mapBrowserEvent.coordinate;
+
+       var element = popup.getElement();
+
+       $(element).popover('destroy');
+       popup.setPosition(coordinate);
+
+        var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+            coordinate, 'EPSG:3857', 'EPSG:4326'));
+        // the keys are quoted to prevent renaming in ADVANCED mode.
+       $(element).popover({
+            'placement': 'top',
+            'animation': false,
+            'html': true,
+            'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
+       });
+       $(element).popover('show');
+
+    });
+
+
+
+
+
+    /*
+    map.on('click', function(evt) {
+        console.log(evt);
+        var element = popup.getElement();
+        var coordinate = evt.coordinate;
+        var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+            coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+        console.log(coordinate)
+
+
+        //$(element).popover('destroy');
+        popup.setPosition(coordinate);
+        // the keys are quoted to prevent renaming in ADVANCED mode.
+        $(element).popover({
+            'placement': 'top',
+            'animation': false,
+            'html': true,
+            'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
+        });
+        $(element).popover('show');
+
+    });
+    */
+
+
+
+
 }]);
