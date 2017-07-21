@@ -1,5 +1,6 @@
 div#side {
     overflow-y: scroll;
+    overflow-x: hidden;
     padding: 0px;
 }
 
@@ -9,9 +10,17 @@ div.tweet {
     border-width: 0 1px 1px;
     border-radius: 4px 4px 4px 4px;
     padding: 10px;
-    margin: 1px
+    margin: 1px;
+    width: 100%;
 }
-
+img.tweetAvatar {
+    border-radius: 50%;
+    margin-right: 5px;
+}
+div.tweetBody {
+    margin-top: 14px;
+    font-size: small;
+}
 div#map {
     padding-right: 0px;
 }

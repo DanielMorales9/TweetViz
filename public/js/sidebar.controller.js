@@ -14,7 +14,13 @@ app.controller('SideBarController', ['$scope', function($scope) {
             console.log(data);
             ok = false;
         }
-        var newEle = angular.element("<div class='tweet'>" + data.text+ "</div>");
+        var newEle = angular.element("" +
+            "<div class='tweet'>" +
+            "<div class='tweetHeader'>" +
+            "<div class='tweetUser'>" +
+            "<span><img class='tweetAvatar' src='"+data.user.profile_image_url+"'></span>" +
+            "<span><b>"+data.user.name+"</b></span></div>"
+            +"<div class='tweetBody'><p>"+ data.text+ "</p></div></div></div>");
         angular.element(target).prepend(newEle);
         if (tweets_number === MAX_TWEETS) {
             target.removeChild(target.lastChild);

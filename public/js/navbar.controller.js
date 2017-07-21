@@ -19,4 +19,7 @@ app.controller('NavBarController', ['$scope', function ($scope) {
 
         }
     }
+
+
+
 }]);
