@@ -13,6 +13,8 @@ var locations = {
     all: '-180,-90,180,90'
 };
 
+var socket_rooms = {};
+
 
 module.exports = function(io) {
 
@@ -32,11 +34,26 @@ module.exports = function(io) {
 
             socket.join(event.room);
 
+            socket_rooms[socket.id] = event.room;
+
             if (!tweetMgr[event.room]) {
                 tweetMgr[event.room] = twitter.stream('statuses/filter',  { locations: locations.all });
                 streamMap(tweetMgr[event.room], event.room)
             }
 
+        });
+
+        socket.on('disconnect', function(event) {
+            var r = socket_rooms[socket.id];
+            if (r) {
+                //se non c'è nessuno nella room spegni lo stream della room
+                if (!io.sockets.adapter.rooms[r]) {
+                    tweetMgr[r].stop();
+                    console.log("tweet stream deleted", r);
+                    delete tweetMgr[r];
+                }
+            }
+            delete socket_rooms[socket.id];
         });
 
         socket.on('bbox', function (event) {

@@ -1,0 +1,7 @@
+div#side {
+    overflow-y: scroll;
+}
+
+div#map {
+    padding-right: 0px;
+}

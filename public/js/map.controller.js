@@ -1,4 +1,4 @@
-app.controller('MapController', ['socket', function(socket) {
+app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     var attribution = new ol.control.Attribution({
         collapsible: false
     });
@@ -51,9 +51,8 @@ app.controller('MapController', ['socket', function(socket) {
     */
 
 
-    socket.emit('start', { room: 'map' });
-    socket.on('tweet', function(data) {
-        console.log(data);
+    $scope.$on('tweet', function(event, data) {
+        //console.log(data);
 
         var point_feature = new ol.Feature({ });
         var point_geom = new ol.geom.Point(
@@ -85,7 +84,8 @@ app.controller('MapController', ['socket', function(socket) {
     //setTimeout(trigger, 3000);
 
 
-    var source = new ol.source.Vector({wrapX: false});
+    /* var source = new ol.source.Vector({wrapX: false});
+
 
     var draw_vector = new ol.layer.Vector({
         source: source
@@ -94,7 +94,7 @@ app.controller('MapController', ['socket', function(socket) {
     var geometryFunction = ol.interaction.Draw.createBox();
     var draw = new ol.interaction.Draw({
         source: vector_layer.getSource(),
-        type: /** @type {ol.geom.GeometryType} */ 'Box',
+        type: 'Box',
         geometryFunction: geometryFunction
     });
     map.addInteraction(draw);
@@ -103,4 +103,5 @@ app.controller('MapController', ['socket', function(socket) {
 
         console.log(evt.feature.getGeometry().getCoordinates())
     })
+    */
 }]);

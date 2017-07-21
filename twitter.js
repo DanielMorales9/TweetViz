@@ -11,6 +11,4 @@ var twitter = new Twit({
     access_token_secret: nconf.get('TWITTER_ACCESS_TOKEN_SECRET')
 });
 
-
-
 module.exports = twitter;
