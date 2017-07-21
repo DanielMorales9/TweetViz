@@ -2,6 +2,14 @@ div#side {
     overflow-y: scroll;
 }
 
+div.tweet {
+    display: inline-block;
+    border: 1px solid #e1e8ed;
+    border-width: 0 1px 1px;
+    border-radius: 4px 4px 4px 4px;
+    padding: 10px
+}
+
 div#map {
     padding-right: 0px;
 }
