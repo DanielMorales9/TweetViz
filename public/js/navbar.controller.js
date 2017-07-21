@@ -18,7 +18,7 @@ app.controller('NavBarController', ['$scope', function ($scope) {
             $scope.$emit('start', {})
 
         }
-    }
+    };
 
     $scope.toogleSearchName = 'OFF';
     $scope.toogleSearchColor = false;
@@ -35,4 +35,5 @@ app.controller('NavBarController', ['$scope', function ($scope) {
             $scope.$emit('ON', {type: "draw", active: true})
         }
     }
+
 }]);
