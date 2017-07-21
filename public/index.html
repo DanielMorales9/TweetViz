@@ -2,7 +2,7 @@
 <html lang="en" ng-app="tweetviz">
 <head>
     <meta charset="UTF-8">
-    <title>BitViz</title>
+    <title>TweetViz</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.2.0/ol.css">
@@ -28,7 +28,7 @@
 
 </head>
 <body>
-<div ng-controller="MainController">
+<div ng-controller="MainController" id="main">
     <div ng-controller="NavBarController">
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -36,15 +36,15 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">TweetViz</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <!--li class="nav-item active">
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
-                    </li>
+                    </li-->
                     <li >
                         <button ng-class="{'btn btn-outline-danger' : !toogleSearchColor,  'btn btn-outline-success': toogleSearchColor}" type="button" ng-click="toogleSearch()">{{toogleSearchName}}</button>
                     </li>
@@ -62,7 +62,7 @@
         </nav>
     </div>
     <div class="row">
-        <div ng-controller="MapController" id="map" class="col-9 map" tabindex="0"></div>
+        <div ng-controller="MapController" id="map" class="col-9" tabindex="0"></div>
         <div ng-controller="SideBarController" id="side" class="col-3"></div>
     </div>
     <div id="popup"></div>

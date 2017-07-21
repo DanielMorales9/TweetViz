@@ -11,6 +11,11 @@ app.controller('SideBarController', ['$scope', function($scope) {
 
     $scope.$on('tweet', function(event, data) {
 
+        var string = "This is going #right on the way";
+        data.text = data.text.replace( /(http:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
+        data.text = data.text.replace( /(https:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
+        data.text = data.text.replace(/#(\S*)/g,'<a href="http://twitter.com/#!/search/$1">#$1</a>');
+
 
         var d = new Date(data.created_at);
         var dateTime = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();

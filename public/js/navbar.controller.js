@@ -5,7 +5,7 @@ app.controller('NavBarController', ['$scope', function ($scope) {
 
     $scope.toogleStream = function () {
         if ($scope.toogleStreamName === 'Stop') {
-            $scope.toogleStreamName = 'Start';
+            $scope.toogleStreamName = 'Restart';
             $scope.toogleStreamColor = true;
 
             $scope.$emit('stop', {})

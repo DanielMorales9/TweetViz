@@ -143,7 +143,7 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
             'animation': false,
             'html': true,
             'content':
-            "<div class='tweet'>" +
+            "<div class='tweetPopup'>" +
             "<div class='tweetHeader'>" +
             "<div class='tweetUser'>" +
             "<span><img class='tweetAvatar' src='"+data.user.profile_image_url+"'></span>" +
