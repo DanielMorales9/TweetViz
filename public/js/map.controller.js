@@ -50,6 +50,7 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     map.getView().fit(ext, map.getSize());
     */
 
+    var tweets = {};
 
     $scope.$on('tweet', function(event, data) {
         //console.log(data);
@@ -58,11 +59,14 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
         var point_geom = new ol.geom.Point(
             data.coordinates.coordinates
         );
+        tweets[data.id] = data;
 
         point_feature.setGeometry(point_geom);
         point_feature.getGeometry().transform(current_projection, new_projection);
         vector_layer.getSource().addFeature(point_feature);
+        point_feature.setId(data.id);
         setTimeout(function() {
+            delete tweets[point_feature.getId()];
             vector_layer.getSource().removeFeature(point_feature)
         }, 3000);
     });
@@ -116,9 +120,6 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     map.addInteraction(selectPointerMove);
 
     selectPointerMove.on('select', function (e) {
-       console.log(e);
-
-       console.log(e.mapBrowserEvent.pixel)
        var coordinate = e.mapBrowserEvent.coordinate;
 
        var element = popup.getElement();
@@ -129,11 +130,27 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
         var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
             coordinate, 'EPSG:3857', 'EPSG:4326'));
         // the keys are quoted to prevent renaming in ADVANCED mode.
+        var featureId = e.target.getFeatures().getArray()[0].getId();
+
+        var data = tweets[featureId];
+
+        var d = new Date(data.created_at);
+        var dateTime = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+
        $(element).popover({
             'placement': 'top',
             'animation': false,
             'html': true,
-            'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
+            'content':
+            "<div class='tweet'>" +
+            "<div class='tweetHeader'>" +
+            "<div class='tweetUser'>" +
+            "<span><img class='tweetAvatar' src='"+data.user.profile_image_url+"'></span>" +
+            "<span><b>"+data.user.name+"</b></span></div>"+
+            "<div class='tweetBody'><p>"+ data.text+ "</p></div>" +
+            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;"+data.place.full_name+"</i>&nbsp;&nbsp" +
+            "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;"+ dateTime +
+            "</div></div></div>"
        });
        $(element).popover('show');
 

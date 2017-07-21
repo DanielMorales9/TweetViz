@@ -23,7 +23,7 @@ module.exports = function(io) {
         stream.on('tweet', function (tweet) {
             if (tweet.geo) {
                 io.sockets.in(room).emit('tweet', tweet);
-                console.log(tweet.geo.coordinates)
+                console.log(room, tweet.geo.coordinates)
             }
         });
 

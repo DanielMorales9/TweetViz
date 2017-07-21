@@ -11,6 +11,7 @@ app.controller('SideBarController', ['$scope', function($scope) {
 
     $scope.$on('tweet', function(event, data) {
 
+
         var d = new Date(data.created_at);
         var dateTime = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         var newEle = angular.element("" +
