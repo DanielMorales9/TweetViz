@@ -168,4 +168,8 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     });
     */
 
+    $scope.$on('drawY', function(event,data){
+        console.log(data);
+    });
+
 }]);
