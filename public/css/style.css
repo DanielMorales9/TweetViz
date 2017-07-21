@@ -19,8 +19,15 @@ img.tweetAvatar {
 }
 div.tweetBody {
     margin-top: 14px;
-    font-size: small;
+    font-size: medium;
 }
+
+div.tweetFooter {
+    color: #697882;
+    font-size: small;
+
+}
+
 div#map {
     padding-right: 0px;
 }
