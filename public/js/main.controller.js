@@ -3,6 +3,8 @@
  */
 app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
 
+    var status = {};
+
     socket.emit('start', { room: 'map' });
     socket.on('tweet', function(data) {
         $scope.$broadcast('tweet', data);
@@ -21,8 +23,15 @@ app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
     });
 
     $scope.$on('bbox', function(event, data) {
-        socket.emit('bbox', data);
-        $scope.$broadcast('bboxDOWN', data);
+        status.locations = data.locations;
+        socket.emit('bbox', status);
+        $scope.$broadcast('bboxDOWN', status);
+        console.log(status)
     });
 
+    $scope.$on('search', function(event, data) {
+        status.track = data.track;
+        socket.emit('search', status);
+        console.log(status)
+    })
 }]);

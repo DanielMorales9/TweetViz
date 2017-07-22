@@ -168,7 +168,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
         var new_ext = ol.extent.boundingExtent([ext[0], ext[1]]);
         var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
-        $scope.$emit('bbox', {coords: prj_ext});
+        $scope.$emit('bbox', {locations: prj_ext.join(",")});
         $scope.$emit('interactionUP', {type: 'draw', active: false})
     });
 

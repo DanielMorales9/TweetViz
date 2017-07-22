@@ -93,14 +93,34 @@ module.exports = function(io) {
 
         socket.on('bbox', function (event) {
             leaveRoom(socket);
-            var room = "bbox";
-            var location = event.coords.join(",");
-
-            room = room.concat("_"+location);
+            var room = "";
+            if(event.track) {
+                room = event.track;
+                room = room.concat("_"+event.locations);
+            }
+            else {
+                room = event.locations;
+            }
             socket.join(room);
             socket_rooms[socket.id] = room;
+            console.log("bbox tweet stream started", room);
+            console.log("bbox event", event);
+            tweetMgr[room] = twitter.stream('statuses/filter',  event);
+            streamMap(tweetMgr[room], room)
+        });
 
-            tweetMgr[room] = twitter.stream('statuses/filter',  { locations: location });
+        socket.on('search', function(event) {
+            leaveRoom(socket);
+            var room = "";
+
+            room = event.track;
+            if (event.locations)
+                room = room.concat("_"+event.locations);
+            socket.join(room);
+            socket_rooms[socket.id] = room;
+            console.log("search tweet stream started", room);
+            console.log("search event", event);
+            tweetMgr[room] = twitter.stream('statuses/filter',  event);
             streamMap(tweetMgr[room], room)
         });
 
