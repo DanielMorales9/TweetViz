@@ -80,7 +80,7 @@ module.exports = function(io) {
                 socket.join(r);
 
                 tweetMgr[r].start();
-                console.log("tweet stream stopped", r);
+                console.log("tweet stream restart", r);
             }
             else {
                 console.log('Restart', 'something got wrong')

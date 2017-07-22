@@ -26,53 +26,16 @@
     <script src="js/navbar.controller.js"></script>
     <script src="js/map.controller.js"></script>
     <script src="js/sidebar.controller.js"></script>
+    <script src="js/navbar.util.js">
 
-    <script>
-        $(document).ready(function(){
-
-            $("#bigNav").hide();
-            $("#hide").click(function(){
-                $("#bigNav").hide();
-                $("#littleNav").show();
-            });
-            $("#show").click(function(){
-                $("#bigNav").show();
-                $("#littleNav").hide();
-            });
-
-            $("#littleNav").hover(function () {
-                $("#bigNav").show();
-                $("#littleNav").hide();
-            }, function () {
-
-            });
-            $("#bigNav").hover(function(){
-
-            }, function () {
-                $("#bigNav").hide();
-                $("#littleNav").show();
-
-            });
-
-            });
     </script>
-    <style>
-        .little_navbar {
-            height: 50px;
-        }
-    </style>
-    <style>
-        .big_navbar {
-            height: 70px;
-        }
-    </style>
 </head>
 <body>
 <div ng-controller="MainController" id="main">
     <div ng-controller="NavBarController">
 
 
-        <nav id="bigNav" class="navbar big_navbar fixed-bottom navbar-toggleable-md navbar-light bg-faded">
+        <nav id="bigNav" class="navbar fixed-bottom navbar-toggleable-md navbar-light bg-faded">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -114,9 +77,7 @@
     <div>
         <nav id ="littleNav" class="navbar little_navbar fixed-bottom navbar-inverse">
             <div>
-                <div class="navbar-header">
-
-                </div>
+                <div class="navbar-header"></div>
             </div>
         </nav>
     </div>
@@ -124,7 +85,9 @@
 
     <div class="row">
         <div ng-controller="MapController" id="map" class="col-9" tabindex="0"></div>
-        <div ng-controller="SideBarController" id="side" class="col-3"></div>
+        <div ng-controller="SideBarController" id="side" class="col-3">
+            <div class="sideTop"></div>
+        </div>
     </div>
 
     <div id="popup" class="ol-popup">

@@ -120,3 +120,19 @@ div#map {
 .ol-popup-closer:after {
     content: "✖";
 }
+
+.little_navbar {
+    height: 20px;
+}
+
+div.sidetop {
+    border: 1px solid #ddd;
+    width:24%;
+    background-color: white;
+    float:left;
+    border: 2px solid #c00;
+    margin-right:5px;
+    min-height:50px;
+    position:fixed;
+
+}
