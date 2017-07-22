@@ -15,7 +15,7 @@ app.controller('NavBarController', ['$scope', function ($scope) {
             $scope.toogleStreamName = 'Stop';
             $scope.toogleStreamColor = false;
 
-            $scope.$emit('start', {})
+            $scope.$emit('restart', {})
 
         }
     };
@@ -34,6 +34,24 @@ app.controller('NavBarController', ['$scope', function ($scope) {
             $scope.toogleDrawColor = false;
             $scope.$emit('interactionUP', {type: "draw", active: true})
         }
-    }
+    };
+
+    $scope.$on('interaction', function (event, data) {
+        if (data.active) {
+            $scope.toogleDrawName = 'OFF';
+            $scope.toogleDrawColor = false;
+        }
+        else {
+            $scope.toogleDrawName = 'ON';
+            $scope.toogleDrawColor = true;
+        }
+    });
+
+    $scope.$on('bboxDOWN', function (event, data) {
+        if ($scope.toogleStreamName = 'Restart') {
+            $scope.toogleStreamName = 'Stop';
+            $scope.toogleStreamColor = false;
+        }
+    })
 
 }]);

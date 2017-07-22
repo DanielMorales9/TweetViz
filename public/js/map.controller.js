@@ -155,13 +155,28 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     });
 
+    draw.on('drawstart', function(evt) {
+        removeDrawnFeatures()
+    });
+
+    draw.on('drawend', function(evt) {
+        var feature = evt.feature;
+        var geom = feature.getGeometry();
+        var ext = geom.getExtent();
+        fitExtent(feature, geom);
+
+        var new_ext = ol.extent.boundingExtent([ext[0], ext[1]]);
+        var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
+        $scope.$emit('bbox', {coords: prj_ext});
+        $scope.$emit('interactionUP', {type: 'draw', active: false})
+    });
+
 
     /** -----------------------------------------
      *  ----------- EVENT LISTENERS -------------
      *  -----------------------------------------
      */
     $scope.$on('tweet', function (event, data) {
-        //console.log(data);
 
         var point_feature = new ol.Feature();
         var point_geom = new ol.geom.Point(
@@ -179,11 +194,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         }, 3000);
     });
 
-
-    /** ---------------------------------------
-     * --------- INTERACTION HANDLER ----------
-     * ----------------------------------------*/
-
     $scope.$on('interaction', function (event, data) {
         switch( data.type ) {
             case 'draw':
@@ -194,6 +204,11 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         }
     });
 
+
+    /** ---------------------------------------
+     * --------- INTERACTION HANDLER ----------
+     * ----------------------------------------*/
+
     function drawHandler(data) {
         if(data.active) {
             map.addInteraction(draw);
@@ -201,6 +216,28 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         else {
             map.removeInteraction(draw);
         }
+    }
+
+    /**
+     * ----------------------------------------
+     * --------- UTILITY FUNCTIONS ------------
+     * ----------------------------------------
+     */
+
+    function removeDrawnFeatures() {
+        draw_source.getFeatures().forEach(function (f) {
+            draw_source.removeFeature(f);
+        })
+    }
+
+    function fitExtent(feature, geom) {
+        map.getView().fit(geom, {
+            duration: 2000,
+            nearest: true,
+            callback: function() {
+            draw_source.removeFeature(feature);
+            }
+        });
     }
 
 }]);

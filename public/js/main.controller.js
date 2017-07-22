@@ -8,8 +8,8 @@ app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
         $scope.$broadcast('tweet', data);
     });
 
-    $scope.$on('start', function(event, data) {
-        socket.emit('start', { room: 'map' });
+    $scope.$on('restart', function(event, data) {
+        socket.emit('restart', {});
     });
 
     $scope.$on('stop', function(event, data) {
@@ -20,5 +20,9 @@ app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
        $scope.$broadcast('interaction', data);
     });
 
+    $scope.$on('bbox', function(event, data) {
+        socket.emit('bbox', data);
+        $scope.$broadcast('bboxDOWN', data);
+    });
 
 }]);

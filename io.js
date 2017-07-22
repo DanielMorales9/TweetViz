@@ -29,13 +29,30 @@ module.exports = function(io) {
 
     };
 
-    function leaveRoom(socket, r) {
-        socket.leave(r);
-        //se non c'è nessuno nella room spegni lo stream della room
-        if (!io.sockets.adapter.rooms[r]) {
-            tweetMgr[r].stop();
-            console.log("tweet stream deleted", r);
-            delete tweetMgr[r];
+    function leaveRoom(socket) {
+        var r = socket_rooms[socket.id];
+        if (r) {
+            socket.leave(r);
+            //se non c'è nessuno nella room spegni lo stream della room
+            if (!io.sockets.adapter.rooms[r]) {
+                tweetMgr[r].stop();
+                console.log("tweet stream deleted", r);
+                delete tweetMgr[r];
+            }
+        }
+        delete socket_rooms[socket.id];
+    }
+
+    function stopRoom(socket) {
+        var r = socket_rooms[socket.id];
+        if (r) {
+            socket.leave(r);
+            //se non c'è nessuno nella room spegni lo stream della room
+            if (!io.sockets.adapter.rooms[r]) {
+                tweetMgr[r].stop();
+
+                console.log("tweet stream stopped", r);
+            }
         }
     }
 
@@ -54,31 +71,37 @@ module.exports = function(io) {
         });
 
         socket.on('disconnect', function(event) {
+           leaveRoom(socket)
+        });
+
+        socket.on('restart', function (event) {
             var r = socket_rooms[socket.id];
             if (r) {
-               leaveRoom(socket, r)
+                socket.join(r);
+
+                tweetMgr[r].start();
+                console.log("tweet stream stopped", r);
             }
-            delete socket_rooms[socket.id];
+            else {
+                console.log('Restart', 'something got wrong')
+            }
         });
 
         socket.on('stop', function(event) {
-            var r = socket_rooms[socket.id];
-            if (r) {
-                leaveRoom(socket, r);
-            }
-            delete socket_rooms[socket.id];
+            stopRoom(socket);
         });
 
         socket.on('bbox', function (event) {
-            for (var r in socket.rooms)
-                leaveRoom(socket, r)
-
-            var topic = "bbox";
+            leaveRoom(socket);
+            var room = "bbox";
             var location = event.coords.join(",");
-            topic = topic.concat(location);
-            socket.join(topic);
-            tweetMgr[topic] = twitter.stream('statuses/filter',  { locations: location });
-            streamMap(tweetMgr[topic], topic)
+
+            room = room.concat("_"+location);
+            socket.join(room);
+            socket_rooms[socket.id] = room;
+
+            tweetMgr[room] = twitter.stream('statuses/filter',  { locations: location });
+            streamMap(tweetMgr[room], room)
         });
 
     });
