@@ -5,7 +5,7 @@ app.controller('NavBarController', ['$scope', function ($scope) {
 
     $scope.toogleStream = function () {
         if ($scope.toogleStreamName === 'Stop') {
-            $scope.toogleStreamName = 'Start';
+            $scope.toogleStreamName = 'Restart';
             $scope.toogleStreamColor = true;
 
             $scope.$emit('stop', {})
@@ -20,19 +20,19 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     };
 
-    $scope.toogleSearchName = 'OFF';
-    $scope.toogleSearchColor = false;
-    $scope.toogleSearch = function(){
-        if($scope.toogleSearchName === 'OFF') {
-            $scope.toogleSearchName = 'ON';
-            $scope.toogleSearchColor = true;
+    $scope.toogleDrawName = 'OFF';
+    $scope.toogleDrawColor = false;
+    $scope.toogleDraw = function(){
+        if($scope.toogleDrawName === 'OFF') {
+            $scope.toogleDrawName = 'ON';
+            $scope.toogleDrawColor = true;
 
-            $scope.$emit('OFF', {type: "draw", active: false})
+            $scope.$emit('interactionUP', {type: "draw", active: false})
         }
         else{
-            $scope.toogleSearchName = 'OFF';
-            $scope.toogleSearchColor = false;
-            $scope.$emit('ON', {type: "draw", active: true})
+            $scope.toogleDrawName = 'OFF';
+            $scope.toogleDrawColor = false;
+            $scope.$emit('interactionUP', {type: "draw", active: true})
         }
     }
 

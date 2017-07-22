@@ -1,7 +1,25 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 div#side {
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 0px;
+}
+ div#main {
+     height: 100%;
+ }
+
+ div.row {
+     height: 100%;
+ }
+
+div#map {
+    height: 100%;
+    right: 0;
+    bottom: 0;
 }
 
 div.tweet {
@@ -13,6 +31,17 @@ div.tweet {
     margin: 1px;
     width: 100%;
 }
+
+div.tweetPopup {
+    display: inline-block;
+    border-width: 0 1px 1px;
+    border-radius: 4px 4px 4px 4px;
+    padding: 10px;
+    margin: 1px;
+    width: 100%;
+}
+
+
 img.tweetAvatar {
     border-radius: 50%;
     margin-right: 5px;
@@ -20,14 +49,74 @@ img.tweetAvatar {
 div.tweetBody {
     margin-top: 14px;
     font-size: medium;
+    width: 100%;
+
+}
+
+div.tweetHeader {
+    width: 100%;
+
+}
+
+div.tweetBody>p {
+    text-align: left;
 }
 
 div.tweetFooter {
     color: #697882;
     font-size: small;
-
+    text-align: right;
 }
+
 
 div#map {
     padding-right: 0px;
+}
+
+.ol-popup {
+    position: absolute;
+    background-color: #f5f8fa;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+}
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.ol-popup-content {
+    width: 100%
+}
+
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+.ol-popup-closer:after {
+    content: "✖";
 }

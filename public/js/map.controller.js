@@ -1,4 +1,4 @@
-app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
+app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     var attribution = new ol.control.Attribution({
         collapsible: false
     });
@@ -6,7 +6,7 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     var map = new ol.Map({
 
         target: 'map',
-        controls: ol.control.defaults({ attribution: false }).extend([attribution]),
+        controls: ol.control.defaults({attribution: false}).extend([attribution]),
         view: new ol.View({
             center: [0, 0],
             zoom: 2
@@ -40,22 +40,22 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
     map.addLayer(vector_layer);
 
     /*
-    fit map in bounding box
-    var destLoc = [-90, -90];
-    var currentLoc = [90, 90];
+     fit map in bounding box
+     var destLoc = [-90, -90];
+     var currentLoc = [90, 90];
 
-    var ext = ol.extent.boundingExtent([destLoc,currentLoc]);
-    ext = ol.proj.transformExtent(ext, current_projection, new_projection);
+     var ext = ol.extent.boundingExtent([destLoc,currentLoc]);
+     ext = ol.proj.transformExtent(ext, current_projection, new_projection);
 
-    map.getView().fit(ext, map.getSize());
-    */
+     map.getView().fit(ext, map.getSize());
+     */
 
     var tweets = {};
 
-    $scope.$on('tweet', function(event, data) {
+    $scope.$on('tweet', function (event, data) {
         //console.log(data);
 
-        var point_feature = new ol.Feature({ });
+        var point_feature = new ol.Feature();
         var point_geom = new ol.geom.Point(
             data.coordinates.coordinates
         );
@@ -65,7 +65,7 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
         point_feature.getGeometry().transform(current_projection, new_projection);
         vector_layer.getSource().addFeature(point_feature);
         point_feature.setId(data.id);
-        setTimeout(function() {
+        setTimeout(function () {
             delete tweets[point_feature.getId()];
             vector_layer.getSource().removeFeature(point_feature)
         }, 3000);
@@ -87,25 +87,18 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
 
     //setTimeout(trigger, 3000);
 
+    var source = new ol.source.Vector({wrapX: false});
+    var draw_vector = new ol.layer.Vector({
+        source: source
+    });
+    map.addLayer(draw_vector);
 
-//    var source = new ol.source.Vector({wrapX: false});
-//
-//    var draw_vector = new ol.layer.Vector({
-//        source: source
-//    });
-//    map.addLayer(draw_vector);
-//    var geometryFunction = ol.interaction.Draw.createBox();
-//    var draw = new ol.interaction.Draw({
-//        source: vector_layer.getSource(),
-//        type: /** @type {ol.geom.GeometryType} */  'Box',
-//        geometryFunction: geometryFunction
-//    });
-//    map.addInteraction(draw);
-//
-//    draw.on('drawend', function(evt) {
-//
-//        console.log(evt.feature.getGeometry().getCoordinates())
-//    })
+    var draw = new ol.interaction.Draw({
+        source: source,
+        type: 'Circle',
+        geometryFunction: ol.interaction.Draw.createBox()
+    });
+    map.addInteraction(draw);
 
 
     var selectPointerMove = new ol.interaction.Select({
@@ -114,79 +107,73 @@ app.controller('MapController', ['socket', '$scope', function(socket, $scope) {
 
     var popup = new ol.Overlay({
         element: document.getElementById('popup'),
-        autoPan : true
+        positioning: 'center-center',
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
     });
     map.addOverlay(popup);
 
+
     map.addInteraction(selectPointerMove);
 
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    closer.onclick = function () {
+        popup.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+
     selectPointerMove.on('select', function (e) {
-       var coordinate = e.mapBrowserEvent.coordinate;
+        var coordinate = e.mapBrowserEvent.coordinate;
 
-       var element = popup.getElement();
-
-       $(element).popover('destroy');
-       popup.setPosition(coordinate);
-
-        var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-            coordinate, 'EPSG:3857', 'EPSG:4326'));
-        // the keys are quoted to prevent renaming in ADVANCED mode.
         var featureId = e.target.getFeatures().getArray()[0].getId();
 
         var data = tweets[featureId];
-
         var d = new Date(data.created_at);
-        var dateTime = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
-
-       $(element).popover({
-            'placement': 'top',
-            'animation': false,
-            'html': true,
-            'content':
-            "<div class='tweet'>" +
+        var dateTime = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        content.innerHTML = "<div class='tweetPopup'>" +
             "<div class='tweetHeader'>" +
             "<div class='tweetUser'>" +
-            "<span><img class='tweetAvatar' src='"+data.user.profile_image_url+"'></span>" +
-            "<span><b>"+data.user.name+"</b></span></div>"+
-            "<div class='tweetBody'><p>"+ data.text+ "</p></div>" +
-            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;"+data.place.full_name+"</i>&nbsp;&nbsp" +
-            "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;"+ dateTime +
-            "</div></div></div>"
-       });
-       $(element).popover('show');
+            "<span><img class='tweetAvatar' src='" + data.user.profile_image_url + "'></span>" +
+            "<span><b>" + data.user.name + "</b></span></div></div>" +
+            "<div class='tweetBody'><p>" + data.text + "</p></div>" +
+            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;" + data.place.full_name + "</i>&nbsp;&nbsp" +
+            "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;" + dateTime +
+            "</div></div>";
+        popup.setPosition(coordinate);
 
     });
-
-
-
 
 
     /*
-    map.on('click', function(evt) {
-        console.log(evt);
-        var element = popup.getElement();
-        var coordinate = evt.coordinate;
-        var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-            coordinate, 'EPSG:3857', 'EPSG:4326'));
+     map.on('click', function(evt) {
+     console.log(evt);
+     var element = popup.getElement();
+     var coordinate = evt.coordinate;
+     var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+     coordinate, 'EPSG:3857', 'EPSG:4326'));
 
-        console.log(coordinate)
+     console.log(coordinate)
 
 
-        //$(element).popover('destroy');
-        popup.setPosition(coordinate);
-        // the keys are quoted to prevent renaming in ADVANCED mode.
-        $(element).popover({
-            'placement': 'top',
-            'animation': false,
-            'html': true,
-            'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
-        });
-        $(element).popover('show');
+     //$(element).popover('destroy');
+     popup.setPosition(coordinate);
+     // the keys are quoted to prevent renaming in ADVANCED mode.
+     $(element).popover({
+     'placement': 'top',
+     'animation': false,
+     'html': true,
+     'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
+     });
+     $(element).popover('show');
 
-    });
-    */
+     });
+     */
 
-    $scope.$on('drawY', function(event,data){
+    $scope.$on('interaction', function (event, data) {
         console.log(data);
     });
 

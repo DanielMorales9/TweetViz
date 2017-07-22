@@ -16,12 +16,9 @@ app.controller('MainController', ['socket', '$scope', function(socket, $scope) {
         socket.emit('stop', {});
     });
 
-    $scope.$on('ON', function(event, data){
-       $scope.$broadcast('drawY', data);
+    $scope.$on('interactionUP', function(event, data){
+       $scope.$broadcast('interaction', data);
     });
 
-    $scope.$on('OFF', function(event, data){
-        $scope.$broadcast('drawN', data);
-    });
 
 }]);
