@@ -26,7 +26,7 @@ app.controller('SideBarController', ['$scope', function($scope) {
             "<span><img class='tweetAvatar' src='"+data.user.profile_image_url+"'></span>" +
             "<span><b>"+data.user.name+"</b></span></div></div>"+
             "<div class='tweetBody'><p>"+ data.text+ "</p></div>" +
-            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;"+data.place.full_name+"</i>&nbsp;&nbsp" +
+            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;"+data.place.full_name+"</i>&nbsp;&nbsp;" +
             "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;"+ dateTime +
             "</div></div>");
         angular.element(target).prepend(newEle);

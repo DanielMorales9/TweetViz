@@ -20,8 +20,8 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     };
 
-    $scope.toogleDrawName = 'OFF';
-    $scope.toogleDrawColor = false;
+    $scope.toogleDrawName = 'ON';
+    $scope.toogleDrawColor = true;
     $scope.toogleDraw = function(){
         if($scope.toogleDrawName === 'OFF') {
             $scope.toogleDrawName = 'ON';

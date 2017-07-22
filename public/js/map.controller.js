@@ -1,4 +1,22 @@
 app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
+
+    /**
+     * Tweet Object Cache
+     */
+    var tweets = {};
+
+    /**
+     * Popup Nodes
+     * @type {Element}
+     */
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+
+
+    /** --------------------------------------------
+     *  ------------ MAP CONFIGURATION -------------
+     *  --------------------------------------------
+     */
     var attribution = new ol.control.Attribution({
         collapsible: false
     });
@@ -13,98 +31,85 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         })
     });
 
+    /**
+     * Layer della Mappa
+     * @type {ol.layer.Tile}
+     */
     var tile_layer = new ol.layer.Tile({
         source: new ol.source.OSM()
     });
 
     map.addLayer(tile_layer);
 
+    /**
+     * Layer dei Tweet
+     * @type {ol.layer.Vector}
+     */
     var vector_layer = new ol.layer.Vector({
         source: new ol.source.Vector()
     });
 
-    var red = new ol.style.Fill({
-        color: [180, 0, 0, 0.3]
-    });
-
-    var style = new ol.style.Style({
-        image: new ol.style.Circle({
-            fill: red,
-            radius: 5
-        }),
-        fill: red
-    });
-    vector_layer.setStyle(style);
-    var current_projection = new ol.proj.Projection({code: "EPSG:4326"});
-    var new_projection = tile_layer.getSource().getProjection();
     map.addLayer(vector_layer);
 
-    /*
-     fit map in bounding box
-     var destLoc = [-90, -90];
-     var currentLoc = [90, 90];
-
-     var ext = ol.extent.boundingExtent([destLoc,currentLoc]);
-     ext = ol.proj.transformExtent(ext, current_projection, new_projection);
-
-     map.getView().fit(ext, map.getSize());
+    /**
+     * Color style
+     * @type {ol.style.Fill}
      */
-
-    var tweets = {};
-
-    $scope.$on('tweet', function (event, data) {
-        //console.log(data);
-
-        var point_feature = new ol.Feature();
-        var point_geom = new ol.geom.Point(
-            data.coordinates.coordinates
-        );
-        tweets[data.id] = data;
-
-        point_feature.setGeometry(point_geom);
-        point_feature.getGeometry().transform(current_projection, new_projection);
-        vector_layer.getSource().addFeature(point_feature);
-        point_feature.setId(data.id);
-        setTimeout(function () {
-            delete tweets[point_feature.getId()];
-            vector_layer.getSource().removeFeature(point_feature)
-        }, 3000);
+    var green = new ol.style.Fill({
+        color: [0, 0, 255, 0.3]
     });
 
-    var trigger = function () {
+    /**
+     * Points Style
+     * @type {ol.style.Style}
+     */
+    var style = new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: green,
+            radius: 5
+        }),
+        fill: green
+    });
 
-        var destLoc = [-122.75, 36.8];
-        var startLoc = [-121.75, 37.8];
+    vector_layer.setStyle(style);
 
-        socket.emit('bbox', {coords: [destLoc, startLoc]});
+    var current_projection = new ol.proj.Projection({code: "EPSG:4326"});
+    var new_projection = tile_layer.getSource().getProjection();
 
-        var ext = ol.extent.boundingExtent([destLoc, startLoc]);
-        ext = ol.proj.transformExtent(ext, current_projection, new_projection);
-
-        map.getView().fit(ext, {duration: 2000});
-
-    };
-
-    //setTimeout(trigger, 3000);
-
-    var source = new ol.source.Vector({wrapX: false});
+    /**
+     * Draw Vector Layer
+     * @type {ol.layer.Vector}
+     */
     var draw_vector = new ol.layer.Vector({
-        source: source
+        source: new ol.source.Vector({wrapX: false})
     });
+
     map.addLayer(draw_vector);
 
+    /**
+     * Draw Interaction
+     * @type {ol.interaction.Draw}
+     */
     var draw = new ol.interaction.Draw({
         source: source,
         type: 'Circle',
         geometryFunction: ol.interaction.Draw.createBox()
     });
-    map.addInteraction(draw);
 
-
+    /**
+     * Pointer Move Interaction for Popup
+     * @type {ol.interaction.Select}
+     */
     var selectPointerMove = new ol.interaction.Select({
         condition: ol.events.condition.pointerMove
     });
 
+    map.addInteraction(selectPointerMove);
+
+    /**
+     * Popup Overlay
+     * @type {ol.Overlay}
+     */
     var popup = new ol.Overlay({
         element: document.getElementById('popup'),
         positioning: 'center-center',
@@ -113,13 +118,14 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             duration: 250
         }
     });
+
     map.addOverlay(popup);
 
-
-    map.addInteraction(selectPointerMove);
-
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
+    /**
+     * ---------------------------------------------
+     * ------------- MAP LISTENERS -----------------
+     * ---------------------------------------------
+     */
     closer.onclick = function () {
         popup.setPosition(undefined);
         closer.blur();
@@ -140,7 +146,8 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             "<span><img class='tweetAvatar' src='" + data.user.profile_image_url + "'></span>" +
             "<span><b>" + data.user.name + "</b></span></div></div>" +
             "<div class='tweetBody'><p>" + data.text + "</p></div>" +
-            "<div class='tweetFooter'><i class='fa fa-map-marker' aria-hidden='true'>&nbsp;" + data.place.full_name + "</i>&nbsp;&nbsp" +
+            "<div class='tweetFooter'>" +
+            "<i class='fa fa-map-marker' aria-hidden='true'>&nbsp;" + data.place.full_name + "</i>&nbsp;&nbsp;" +
             "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;" + dateTime +
             "</div></div>";
         popup.setPosition(coordinate);
@@ -148,33 +155,52 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     });
 
 
-    /*
-     map.on('click', function(evt) {
-     console.log(evt);
-     var element = popup.getElement();
-     var coordinate = evt.coordinate;
-     var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-     coordinate, 'EPSG:3857', 'EPSG:4326'));
-
-     console.log(coordinate)
-
-
-     //$(element).popover('destroy');
-     popup.setPosition(coordinate);
-     // the keys are quoted to prevent renaming in ADVANCED mode.
-     $(element).popover({
-     'placement': 'top',
-     'animation': false,
-     'html': true,
-     'content': '<p>Yo Dre</p><code>' + hdms + '</code>'
-     });
-     $(element).popover('show');
-
-     });
+    /** -----------------------------------------
+     *  ----------- EVENT LISTENERS -------------
+     *  -----------------------------------------
      */
+    $scope.$on('tweet', function (event, data) {
+        //console.log(data);
+
+        var point_feature = new ol.Feature();
+        var point_geom = new ol.geom.Point(
+            data.coordinates.coordinates
+        );
+        tweets[data.id] = data;
+
+        point_feature.setGeometry(point_geom);
+        point_feature.getGeometry().transform(current_projection, new_projection);
+        vector_layer.getSource().addFeature(point_feature);
+        point_feature.setId(data.id);
+        setTimeout(function () {
+            delete tweets[point_feature.getId()];
+            vector_layer.getSource().removeFeature(point_feature)
+        }, 3000);
+    });
+
+
+    /** ---------------------------------------
+     * --------- INTERACTION HANDLER ----------
+     * ----------------------------------------*/
 
     $scope.$on('interaction', function (event, data) {
-        console.log(data);
+        switch( data.type ) {
+            case 'draw':
+                drawHandler(data);
+                break;
+            default:
+                break;
+        }
     });
+
+    function drawHandler(data) {
+        if(data.active) {
+            map.addInteraction(draw);
+        }
+        else {
+            map.removeInteraction(draw);
+            draw_vector.getSource().
+        }
+    }
 
 }]);
