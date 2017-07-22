@@ -76,12 +76,13 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     var current_projection = new ol.proj.Projection({code: "EPSG:4326"});
     var new_projection = tile_layer.getSource().getProjection();
 
+    var draw_source = new ol.source.Vector({wrapX: false});
     /**
      * Draw Vector Layer
      * @type {ol.layer.Vector}
      */
     var draw_vector = new ol.layer.Vector({
-        source: new ol.source.Vector({wrapX: false})
+        source: draw_source
     });
 
     map.addLayer(draw_vector);
@@ -91,7 +92,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      * @type {ol.interaction.Draw}
      */
     var draw = new ol.interaction.Draw({
-        source: source,
+        source: draw_source,
         type: 'Circle',
         geometryFunction: ol.interaction.Draw.createBox()
     });
