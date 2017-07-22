@@ -4,10 +4,14 @@ html, body {
 }
 
 div#side {
+    padding: 0px;
+
+}
+div#sideContent {
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 0px;
 }
+
  div#main {
      height: 100%;
  }
@@ -125,14 +129,25 @@ div#map {
     height: 20px;
 }
 
-div.sidetop {
-    border: 1px solid #ddd;
-    width:24%;
-    background-color: white;
-    float:left;
-    border: 2px solid #c00;
-    margin-right:5px;
-    min-height:50px;
+div.sideHeader {
     position:fixed;
+    overflow-y: hidden;
+}
+
+
+a#navbar-brand-title {
+    position: relative;
+    font-size: 1.10rem;
+    float: left;
+
+}
+
+div#sideHeaderButton {
+    float: right;
+    margin-right: 5px;
+}
+
+#slider .slider-selection {
+    background: #BABABA;
 
 }

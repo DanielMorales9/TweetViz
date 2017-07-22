@@ -1,13 +1,33 @@
 app.controller('SideBarController', ['$scope', function($scope) {
-    var target = document.getElementById('side');
 
-    target.style.maxHeight = target.offsetHeight + 'px';
+    $scope.toogleStreamName = 'Stop';
+    $scope.toogleStreamColor = false;
+
+    $scope.toogleStream = function () {
+        if (!$scope.toogleStreamColor) {
+            $scope.toogleStreamName = 'Restart';
+            $scope.toogleStreamColor = true;
+
+            $scope.$emit('stop', {})
+
+        }
+        else {
+            $scope.toogleStreamName = 'Stop';
+            $scope.toogleStreamColor = false;
+
+            $scope.$emit('restart', {})
+
+        }
+    };
+
+    var target = document.getElementById('sideContent');
+    var offsetHeightSideHeader = document.getElementById('sideHeader').offsetHeight;
+    var offsetHeightSide = document.getElementById('side').offsetHeight;
+    target.style.maxHeight = (offsetHeightSide - offsetHeightSideHeader)+'px';
 
     var MAX_TWEETS = 50;
 
     var tweets_number = 0;
-
-    var ok = true;
 
     $scope.$on('tweet', function(event, data) {
 

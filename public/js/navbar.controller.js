@@ -1,49 +1,57 @@
 app.controller('NavBarController', ['$scope', function ($scope) {
 
-    $scope.toogleStreamName = 'Stop';
-    $scope.toogleStreamColor = false;
-
-    $scope.toogleStream = function () {
-        if ($scope.toogleStreamName === 'Stop') {
-            $scope.toogleStreamName = 'Restart';
-            $scope.toogleStreamColor = true;
-
-            $scope.$emit('stop', {})
-
-        }
-        else {
-            $scope.toogleStreamName = 'Stop';
-            $scope.toogleStreamColor = false;
-
-            $scope.$emit('restart', {})
-
-        }
-    };
-
-    $scope.toogleDrawName = 'ON';
+    var drawOn = 'Draw On';
+    var drawOff = 'Draw Off';
+    $scope.toogleDrawName = drawOn;
     $scope.toogleDrawColor = true;
-    $scope.toogleDraw = function(){
-        if($scope.toogleDrawName === 'OFF') {
-            $scope.toogleDrawName = 'ON';
+
+    $scope.toogleDraw = function () {
+        if (!$scope.toogleDrawColor) {
+            $scope.toogleDrawName = drawOn;
             $scope.toogleDrawColor = true;
+            $('#ex1').slider({
+                formatter: function (value) {
+                    return 'Current value: ' + value;
+                }
+            });
 
             $scope.$emit('interactionUP', {type: "draw", active: false})
         }
-        else{
-            $scope.toogleDrawName = 'OFF';
+        else {
+            $scope.toogleDrawName = drawOff;
             $scope.toogleDrawColor = false;
+
             $scope.$emit('interactionUP', {type: "draw", active: true})
         }
     };
 
-    $scope.$on('interaction', function (event, data) {
-        if (data.active) {
-            $scope.toogleDrawName = 'OFF';
-            $scope.toogleDrawColor = false;
+    $('#timeSlider').slider({
+        tooltip: 'always',
+        formatter: function (value) {
+            return value / 1000 + ' seconds';
         }
-        else {
-            $scope.toogleDrawName = 'ON';
-            $scope.toogleDrawColor = true;
+    });
+
+    $('#timeSlider').on('change', function (evt) {
+        $scope.$emit('interactionUP', {type: "slider", time: evt.value.newValue})
+    });
+
+    /**
+     * ---------------------------------------------
+     * ------------ EVENT LISTENERS ----------------
+     * ---------------------------------------------
+     */
+
+    $scope.$on('interaction', function (event, data) {
+        if (data.type === 'draw') {
+            if (data.active) {
+                $scope.toogleDrawName = drawOff;
+                $scope.toogleDrawColor = false;
+            }
+            else {
+                $scope.toogleDrawName = drawOn;
+                $scope.toogleDrawColor = true;
+            }
         }
     });
 

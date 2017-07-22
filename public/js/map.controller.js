@@ -12,6 +12,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
 
+    var TWEET_DELAY = 3000;
 
     /** --------------------------------------------
      *  ------------ MAP CONFIGURATION -------------
@@ -191,13 +192,16 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         setTimeout(function () {
             delete tweets[point_feature.getId()];
             vector_layer.getSource().removeFeature(point_feature)
-        }, 3000);
+        }, TWEET_DELAY);
     });
 
     $scope.$on('interaction', function (event, data) {
         switch( data.type ) {
             case 'draw':
                 drawHandler(data);
+                break;
+            case 'slider':
+                sliderHandler(data);
                 break;
             default:
                 break;
@@ -216,6 +220,10 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         else {
             map.removeInteraction(draw);
         }
+    }
+
+    function sliderHandler(data) {
+        TWEET_DELAY = data.time || 3000;
     }
 
     /**
