@@ -199,7 +199,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         }
         else {
             map.removeInteraction(draw);
-            draw_vector.getSource().
         }
     }
 
