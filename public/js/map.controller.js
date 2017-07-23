@@ -125,7 +125,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      */
     var popup = new ol.Overlay({
         element: document.getElementById('popup'),
-        positioning: 'center-center',
         autoPan: true,
         autoPanAnimation: {
             duration: 250
@@ -165,6 +164,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             "</div></div>";
 
         popup.setPosition(coordinate);
+        map.addOverlay(popup);
 
     });
 
