@@ -163,6 +163,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             "<i class='fa fa-map-marker' aria-hidden='true'>&nbsp;" + data.place.full_name + "</i>&nbsp;&nbsp;" +
             "<i class='fa fa-clock-o' aria-hidden='true'></i>&nbsp;" + dateTime +
             "</div></div>";
+
         popup.setPosition(coordinate);
 
     });
