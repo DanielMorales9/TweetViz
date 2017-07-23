@@ -125,6 +125,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      */
     var popup = new ol.Overlay({
         element: document.getElementById('popup'),
+        autoPanMargin: 50,
         autoPan: true,
         autoPanAnimation: {
             duration: 250
