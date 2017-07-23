@@ -43,9 +43,9 @@
             <a class="navbar-brand" href="#">TweetViz</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="nav navbar-nav navbar-left mr-auto">
+                <ul class="nav navbar-nav navbar-right mr-auto">
                     <li class="nav-item">
-                        <button style="float: right;"
+                        <button class = "buttonMargin"  style="float: right;"
                                 ng-class="{'btn btn-secondary' : !toogleDrawColor,  'btn btn-primary': toogleDrawColor}"
                                 type="button" ng-click="toogleDraw()"><i class="fa fa-pencil"></i>&nbsp;{{toogleDrawName}}
                         </button>
@@ -53,13 +53,13 @@
 
 
                     <li class="nav-item">
-                        <button style="float: right;"
+                        <button class="buttonMargin"  style="float: right;"
                                 ng-class="{'btn btn-secondary' : !toogleHeatMapColor,  'btn btn-success': toogleHeatMapColor}"
                                 type="button" ng-click="toogleHeatMap()"><i class="fa fa-fire"></i>&nbsp;{{toogleHeatMapName}}
                         </button>
                     </li>
                     <li ng-show="toogleHeatMapColor" class="nav-item">
-                        <div>
+                        <div class = "buttonMargin">
                             <input id="timeSlider"
                                    data-slider-id='slider'
                                    type="text"
@@ -67,7 +67,8 @@
                                    data-slider-max="30000"
                                    data-slider-step="1000"
                                    data-slider-value="3000"/>
-                            <span>Delay</span>&nbsp;
+                            <span>Delay: </span>&nbsp;
+                            <span ng-bind="sliderValue"></span>
                         </div>
                     </li>
                 </ul>
