@@ -243,7 +243,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         else {
             map.addLayer(vector_layer);
             map.removeLayer(heatmap_layer);
-            map.removeInteraction(selectPointerMove);
+            map.addInteraction(selectPointerMove);
             removeFeatures(heatmap_layer);
         }
     });
