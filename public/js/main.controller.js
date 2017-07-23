@@ -68,5 +68,6 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
 
     $scope.$on('heatmapUP', function (event, data) {
         $scope.$broadcast('heatmap', data)
-    })
+    });
+
 }]);

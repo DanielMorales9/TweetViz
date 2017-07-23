@@ -177,10 +177,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         var ext = geom.getExtent();
         fitExtent(feature, geom);
 
-        var new_ext = ol.extent.boundingExtent([ext[0], ext[1]]);
         var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
+        console.log(prj_ext);
         $scope.$emit('bbox', {locations: prj_ext.join(",")});
-        $scope.$emit('interactionUP', {type: 'draw', active: false});
+        if(toggleLayer)
+            map.addInteraction(selectPointerMove);
+        map.removeInteraction(draw);
         removeLayerFeatures()
     });
 
@@ -258,10 +260,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     function drawHandler(data) {
         if (data.active) {
+            console.log("draw", "rimuove pointer move");
             map.addInteraction(draw);
             map.removeInteraction(selectPointerMove)
         }
         else {
+            console.log("draw", "aggiungo pointer move");
             map.removeInteraction(draw);
             map.addInteraction(selectPointerMove)
 
@@ -285,11 +289,11 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     $scope.search = function () {
 
         var hashtag = $scope.hashtag;
-        hashtag = hashtag.replace("#", "");
         hashtag = hashtag.replace(",", " ");
         hashtag = hashtag.replace(" ", ",");
 
         $scope.$emit('search', {track: hashtag});
+
 
         $scope.hashtag = "";
 

@@ -50,22 +50,13 @@ app.controller('NavBarController', ['$scope', function ($scope) {
      * ---------------------------------------------
      */
 
-    $scope.$on('interaction', function (event, data) {
-        if (data.type === 'draw') {
-            if (data.active) {
-                $scope.toogleDrawColor = false;
-            }
-            else {
-                $scope.toogleDrawColor = true;
-            }
-        }
-    });
-
     $scope.$on('bboxDOWN', function (event, data) {
         if ($scope.toogleStreamName = 'Restart') {
             $scope.toogleStreamName = 'Stop';
             $scope.toogleStreamColor = false;
         }
+
+        $scope.toogleDrawColor = !$scope.toogleDrawColor;
     })
 
 }]);
