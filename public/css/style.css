@@ -1,12 +1,14 @@
 html, body {
     height: 100%;
-    overflow: hidden;
+    overflow: visible;
 
 }
 
 div#side {
-    padding: 0px;
-
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    padding-left: 0px;
 }
 div#sideContent {
     overflow-y: scroll;
@@ -129,7 +131,6 @@ div#map {
 
 .little_navbar {
     height: 20px;
-    padding: 0px;
 }
 
 div.sideHeader {
@@ -228,4 +229,8 @@ button.searchButtons:hover {
 
 .buttonMargin{
     margin: 0 5px;
+}
+
+.ol-zoom {
+    left: 1.5rem;
 }

@@ -1,13 +1,14 @@
 app.controller('NavBarController', ['$scope', function ($scope) {
 
+    /*
     var targetNavbar = document.getElementById("bigNav");
     var targetLNavbar = document.getElementById("littleNav");
 
-    var offSetWidthMap = document.getElementById("map").clientWidth;
-    console.log(offSetWidthMap)
+    var offSetWidthMap = document.getElementById("map").offsetWidth;
+    console.log(offSetWidthMap);
     targetLNavbar.style.width = offSetWidthMap + 'px';
     targetNavbar.style.width = offSetWidthMap + 'px';
-
+    */
 
     $scope.toogleDrawColor = true;
     $scope.toogleDrawName = "Draw";
