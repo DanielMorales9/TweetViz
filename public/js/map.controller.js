@@ -230,6 +230,9 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     $scope.$on('resetDOWN', function (event, data) {
         removeLayerFeatures();
+        map.getView().animate({center: [0, 0],
+            zoom: 2,
+            duration: 1000});
     });
 
     $scope.$on('heatmap', function (event, data) {
