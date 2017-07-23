@@ -11,8 +11,9 @@ div#side {
     padding-left: 0px;
     padding-right: 0px;
 }
+
 div#sideContent {
-    overflow-y: scroll;
+    overflow-y: visible;
     overflow-x: hidden;
 }
 
@@ -40,6 +41,9 @@ div.tweet {
     width: 100%;
 }
 
+div.row {
+    margin-right: 0px;
+}
 div.tweetPopup {
     display: inline-block;
     border-width: 0 1px 1px;
@@ -228,9 +232,10 @@ button.searchButtons:hover {
 }
 
 .buttonMargin{
+
     margin: 0 5px;
 }
 
-.col-9 .col-3{
-    padding-right: 0px;
+.nopadding {
+    padding-right: 0;
 }
