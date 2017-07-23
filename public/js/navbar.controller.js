@@ -1,5 +1,14 @@
 app.controller('NavBarController', ['$scope', function ($scope) {
 
+    var targetNavbar = document.getElementById("bigNav");
+    var targetLNavbar = document.getElementById("littleNav");
+
+    var offSetWidthMap = document.getElementById("map").clientWidth;
+    console.log(offSetWidthMap)
+    targetLNavbar.style.width = offSetWidthMap + 'px';
+    targetNavbar.style.width = offSetWidthMap + 'px';
+
+
     $scope.toogleDrawColor = true;
     $scope.toogleDrawName = "Draw";
 
@@ -40,10 +49,14 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     });
 
+    $scope.sliderValue = "3 seconds";
+
     $('#timeSlider').on('change', function (evt) {
         $scope.$emit('interactionUP', {type: "slider", time: evt.value.newValue})
+        $scope.sliderValue = evt.value.newValue / 1000 + " seconds";
     });
 
+    
     /**
      * ---------------------------------------------
      * ------------ EVENT LISTENERS ----------------

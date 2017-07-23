@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     overflow: hidden;
+
 }
 
 div#side {
@@ -24,6 +25,7 @@ div#map {
     height: 100%;
     right: 0;
     bottom: 0;
+    padding-left: 0px;
 }
 
 div.tweet {
@@ -127,6 +129,7 @@ div#map {
 
 .little_navbar {
     height: 20px;
+    padding: 0px;
 }
 
 div.sideHeader {
@@ -221,4 +224,8 @@ button.searchButtons {
 
 button.searchButtons:hover {
     opacity: 1;
+}
+
+.buttonMargin{
+    margin: 0 5px;
 }
