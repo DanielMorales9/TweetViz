@@ -180,7 +180,8 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         var new_ext = ol.extent.boundingExtent([ext[0], ext[1]]);
         var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
         $scope.$emit('bbox', {locations: prj_ext.join(",")});
-        $scope.$emit('interactionUP', {type: 'draw', active: false})
+        $scope.$emit('interactionUP', {type: 'draw', active: false});
+        removeLayerFeatures()
     });
 
 
@@ -223,14 +224,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         }
     });
 
+    $scope.$on('searchDOWN', function (event, data) {
+        removeLayerFeatures();
+    });
 
     $scope.$on('resetDOWN', function (event, data) {
-        if (toggleLayer) {
-            removeFeatures(vector_layer);
-        }
-        else {
-            removeFeatures(heatmap_layer);
-        }
+        removeLayerFeatures();
     });
 
     $scope.$on('heatmap', function (event, data) {
@@ -238,12 +237,14 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         if (data.active) {
             map.addLayer(heatmap_layer);
             map.removeLayer(vector_layer);
+            map.removeInteraction(selectPointerMove);
             removeFeatures(vector_layer)
         }
         else {
             map.addLayer(vector_layer);
             map.removeLayer(heatmap_layer);
-            removeFeatures(heatmap_layer)
+            map.removeInteraction(selectPointerMove);
+            removeFeatures(heatmap_layer);
         }
     });
 
@@ -268,11 +269,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         TWEET_DELAY = data.time || 3000;
     }
 
-    function removeFeatures(layer) {
-        layer.getSource().getFeatures().forEach(function (e) {
-            layer.getSource().removeFeature(e);
-        });
-    }
 
     /**
      * ----------------------------------------
@@ -316,6 +312,21 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
                 draw_source.removeFeature(feature);
             }
         });
+    }
+
+    function removeFeatures(layer) {
+        layer.getSource().getFeatures().forEach(function (e) {
+            layer.getSource().removeFeature(e);
+        });
+    }
+
+    function removeLayerFeatures() {
+        if (toggleLayer) {
+            removeFeatures(vector_layer);
+        }
+        else {
+            removeFeatures(heatmap_layer);
+        }
     }
 
 }]);
