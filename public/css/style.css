@@ -151,3 +151,47 @@ div#sideHeaderButton {
     background: #BABABA;
 
 }
+
+div#status {
+    background-color: gray;
+    color: white;
+    z-index: 5;
+    position: absolute;
+    right: 0rem;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 15px;
+    border-radius: 4px 4px 4px 4px;
+    width: 12%;
+
+}
+
+div.coords {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.status-show-hide {
+    transition: all linear 1.5s;
+}
+.status-show-hide.ng-hide {
+    opacity: 0;
+}
+.status-show-hide.ng-show {
+    opacity: 0.85;
+}
+
+
+
+div.tags {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+span.coords {
+    font-size: 1rem;
+}
+
+span.tags {
+    font-size: 1rem;
+}

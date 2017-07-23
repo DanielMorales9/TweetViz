@@ -124,5 +124,9 @@ module.exports = function(io) {
             streamMap(tweetMgr[room], room)
         });
 
+        socket.on('reset', function(event) {
+            leaveRoom(socket);
+        });
+
     });
 };

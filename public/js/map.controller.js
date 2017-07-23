@@ -216,9 +216,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     function drawHandler(data) {
         if(data.active) {
             map.addInteraction(draw);
+            map.removeInteraction(selectPointerMove)
         }
         else {
             map.removeInteraction(draw);
+            map.addInteraction(selectPointerMove)
+
         }
     }
 

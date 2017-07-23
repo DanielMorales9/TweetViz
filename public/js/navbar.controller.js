@@ -1,28 +1,23 @@
 app.controller('NavBarController', ['$scope', function ($scope) {
 
-    var drawOn = 'Draw On';
-    var drawOff = 'Draw Off';
-    $scope.toogleDrawName = drawOn;
     $scope.toogleDrawColor = true;
+    $scope.toogleDrawName = "Draw";
 
     $scope.toogleDraw = function () {
         if (!$scope.toogleDrawColor) {
-            $scope.toogleDrawName = drawOn;
-            $scope.toogleDrawColor = true;
-            $('#ex1').slider({
-                formatter: function (value) {
-                    return 'Current value: ' + value;
-                }
-            });
 
+            $scope.toogleDrawColor = true;
             $scope.$emit('interactionUP', {type: "draw", active: false})
         }
         else {
-            $scope.toogleDrawName = drawOff;
             $scope.toogleDrawColor = false;
 
             $scope.$emit('interactionUP', {type: "draw", active: true})
         }
+    };
+
+    $scope.reset = function() {
+        $scope.$emit('reset', {})
     };
 
     $scope.searchHashtag = function() {
@@ -58,11 +53,9 @@ app.controller('NavBarController', ['$scope', function ($scope) {
     $scope.$on('interaction', function (event, data) {
         if (data.type === 'draw') {
             if (data.active) {
-                $scope.toogleDrawName = drawOff;
                 $scope.toogleDrawColor = false;
             }
             else {
-                $scope.toogleDrawName = drawOn;
                 $scope.toogleDrawColor = true;
             }
         }
