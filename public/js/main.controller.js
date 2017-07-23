@@ -29,7 +29,6 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
     $scope.$on('bbox', function (event, data) {
         $scope.status.locations = data.locations;
         socket.emit('bbox', $scope.status);
-        $scope.$broadcast('bboxDOWN', $scope.status);
         $scope.statusOk = true;
         var split = $scope.status.locations.split(',');
         var coords = [];
@@ -37,10 +36,9 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
             coords.push(Math.round(split[i] * 100) / 100);
         }
         $scope.coordsOk = true;
-        console.log(coords);
         $scope.coords = [[coords[0], coords[1]], [coords[2], coords[3]]];
-        console.log($scope.coords);
-        console.log($scope.status)
+        $scope.$broadcast('bboxDOWN', $scope.status);
+
     });
 
     $scope.$on('search', function (event, data) {
@@ -50,7 +48,7 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
 
         $scope.tagsOk = true;
         $scope.tags = $scope.status.track.replace(',', ', ');
-        console.log($scope.status)
+        $scope.$broadcast('searchDOWN', {})
     });
 
     $scope.$on('reset', function (event, data) {
@@ -65,6 +63,6 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
         }, 1500);
         socket.emit('reset', {});
         socket.emit('start', {room: 'map'});
-        console.log($scope.status);
+        $scope.$broadcast('resetDOWN', {})
     })
 }]);

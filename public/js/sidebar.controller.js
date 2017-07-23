@@ -29,6 +29,13 @@ app.controller('SideBarController', ['$scope', function($scope) {
 
     var tweets_number = 0;
 
+    /**
+     * ---------------------------------------------
+     * ------------ EVENT LISTENERS ----------------
+     * ---------------------------------------------
+     */
+
+
     $scope.$on('tweet', function(event, data) {
 
         var string = "This is going #right on the way";
@@ -57,5 +64,24 @@ app.controller('SideBarController', ['$scope', function($scope) {
             tweets_number++;
         }
 
+    });
+
+    function stopButton() {
+        if ($scope.toogleStreamColor) {
+            $scope.toogleStreamName = 'Stop';
+            $scope.toogleStreamColor = false;
+        }
+    }
+
+    $scope.$on('searchDOWN', function(event, data) {
+        stopButton();
+    });
+
+    $scope.$on('bboxDOWN', function(event, data) {
+        stopButton();
+    });
+
+    $scope.$on('resetDOWN', function(event, data) {
+        stopButton();
     });
 }]);
