@@ -1,6 +1,6 @@
 html, body {
     height: 100%;
-    overflow: visible;
+    overflow: hidden;
 
 }
 
@@ -9,6 +9,7 @@ div#side {
     right: 0;
     bottom: 0;
     padding-left: 0px;
+    padding-right: 0px;
 }
 div#sideContent {
     overflow-y: scroll;
