@@ -166,13 +166,14 @@ div#status {
 
 }
 
+
 div.coords {
     font-size: 0.8rem;
     text-align: right;
 }
 
 .status-show-hide {
-    transition: all linear 1.5s;
+    transition: all linear 1s;
 }
 .status-show-hide.ng-hide {
     opacity: 0;
@@ -180,8 +181,6 @@ div.coords {
 .status-show-hide.ng-show {
     opacity: 0.85;
 }
-
-
 
 div.tags {
     font-size: 0.8rem;
@@ -194,4 +193,32 @@ span.coords {
 
 span.tags {
     font-size: 1rem;
+}
+
+div#searchBar {
+    background-color: transparent;
+    z-index: 5;
+    position: absolute;
+    margin: 10px 27%;
+    border-radius: 50%;
+}
+
+#input-search {
+    background: rgba(211, 211, 211, 0.3);
+    color: black;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+#reset {
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+button.searchButtons {
+    opacity: 0.5;
+}
+
+button.searchButtons:hover {
+    opacity: 1;
 }

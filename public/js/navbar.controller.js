@@ -16,22 +16,6 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     };
 
-    $scope.reset = function() {
-        $scope.$emit('reset', {})
-    };
-
-    $scope.searchHashtag = function() {
-
-        var hashtag = $scope.hashtag;
-        hashtag = hashtag.replace("#", "");
-        hashtag = hashtag.replace(",", " ");
-        hashtag = hashtag.replace(" ", ",");
-
-        $scope.$emit('search', {track: hashtag});
-
-        $scope.hashtag = "";
-
-    };
 
     $('#timeSlider').slider({
         tooltip: 'always',

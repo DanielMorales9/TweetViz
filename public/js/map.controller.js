@@ -190,8 +190,8 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         vector_layer.getSource().addFeature(point_feature);
         point_feature.setId(data.id);
         setTimeout(function () {
+            vector_layer.getSource().removeFeature(point_feature);
             delete tweets[point_feature.getId()];
-            vector_layer.getSource().removeFeature(point_feature)
         }, TWEET_DELAY);
     });
 
@@ -206,6 +206,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             default:
                 break;
         }
+    });
+
+    $scope.$on('resetDOWN', function (event, data) {
+        vector_layer.getSource().getFeatures().forEach(function (e) {
+            vector_layer.getSource().removeFeature(e);
+        });
     });
 
 
@@ -228,6 +234,28 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     function sliderHandler(data) {
         TWEET_DELAY = data.time || 3000;
     }
+
+    /**
+     * ----------------------------------------
+     * ----------- SCOPE FUNCTIONS ------------
+     * ----------------------------------------
+     */
+    $scope.reset = function() {
+        $scope.$emit('reset', {})
+    };
+
+    $scope.search = function() {
+
+        var hashtag = $scope.hashtag;
+        hashtag = hashtag.replace("#", "");
+        hashtag = hashtag.replace(",", " ");
+        hashtag = hashtag.replace(" ", ",");
+
+        $scope.$emit('search', {track: hashtag});
+
+        $scope.hashtag = "";
+
+    };
 
     /**
      * ----------------------------------------

@@ -27,7 +27,7 @@
     <script src="js/navbar.controller.js"></script>
     <script src="js/map.controller.js"></script>
     <script src="js/sidebar.controller.js"></script>
-    <script src="js/navbar.util.js">
+    <script src="js/utils.js">
 
     </script>
 </head>
@@ -64,24 +64,6 @@
                         </div>
                     </li>
                 </ul>
-
-                <ul class="nav navbar-nav navbar-right mr-auto">
-                    <li class="nav-item">
-                        <form name="myForm" class="form-inline mx-auto">
-                            <input class="form-control form-control-danger mr-sm-2" ng-model="hashtag"
-                                   placeholder="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" ng-click="searchHashtag()">Search
-                            </button>
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-danger"
-                                type="button" ng-click="reset()"><i class="fa fa-exclamation-circle"></i>&nbsp;Reset
-                        </button>
-                    </li>
-
-                </ul>
-
             </div>
         </nav>
     </div>
@@ -95,9 +77,29 @@
         </nav>
     </div>
 
-
     <div class="row">
         <div ng-controller="MapController" id="map" class="col-9" tabindex="0">
+            <div id="searchBar">
+                <div class="input-group" id="searchBox">
+                    <input ng-model="hashtag" placeholder="Search for #job..." type="text" class="form-control" id="input-search" aria-label="...">
+                    <div class="input-group-btn">
+                        <div class="btn-group">
+                            <button ng-click="search()" type="button" class="btn btn-primary searchButtons">
+                                <i class="fa fa-search"></i>&nbsp;Search
+                            </button>
+                            <!--button type="button" id="heatmap"
+                                    class="searchButtons btn btn-primary">
+                                <i class="fa fa-fire"></i>&nbsp;HeatMap
+                            </button-->
+                            <button ng-click="reset()" type="button" id="reset"
+                                    class="searchButtons btn btn-danger">
+                                <i class="fa fa-exclamation-circle"></i>&nbsp;Reset
+                            </button>
+
+                        </div>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
             <div id="status" class="status-show-hide"
                  ng-model="statusOk"
                  ng-show="statusOk">
