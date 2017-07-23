@@ -52,6 +52,17 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     map.addLayer(vector_layer);
 
+
+    /**
+     * HeatMap layer dei tweet
+     * @type {ol.layer.HeatMap}
+     */
+    var heatmap_layer = new ol.layer.Heatmap({
+        source: new ol.source.Vector()
+    });
+
+    var toggleLayer = true;
+
     /**
      * Color style
      * @type {ol.style.Fill}
@@ -156,11 +167,11 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     });
 
-    draw.on('drawstart', function(evt) {
+    draw.on('drawstart', function (evt) {
         removeDrawnFeatures()
     });
 
-    draw.on('drawend', function(evt) {
+    draw.on('drawend', function (evt) {
         var feature = evt.feature;
         var geom = feature.getGeometry();
         var ext = geom.getExtent();
@@ -178,25 +189,29 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      *  -----------------------------------------
      */
     $scope.$on('tweet', function (event, data) {
+            var point_feature = new ol.Feature();
+            var point_geom = new ol.geom.Point(
+                data.coordinates.coordinates
+            );
+            point_feature.setGeometry(point_geom);
+            point_feature.getGeometry().transform(current_projection, new_projection);
+        if (toggleLayer) {
+            point_feature.setId(data.id);
+            tweets[data.id] = data;
+            vector_layer.getSource().addFeature(point_feature);
 
-        var point_feature = new ol.Feature();
-        var point_geom = new ol.geom.Point(
-            data.coordinates.coordinates
-        );
-        tweets[data.id] = data;
-
-        point_feature.setGeometry(point_geom);
-        point_feature.getGeometry().transform(current_projection, new_projection);
-        vector_layer.getSource().addFeature(point_feature);
-        point_feature.setId(data.id);
-        setTimeout(function () {
-            vector_layer.getSource().removeFeature(point_feature);
-            delete tweets[point_feature.getId()];
-        }, TWEET_DELAY);
+            setTimeout(function () {
+                vector_layer.getSource().removeFeature(point_feature);
+                delete tweets[point_feature.getId()];
+            }, TWEET_DELAY);
+        }
+        else {
+            heatmap_layer.getSource().addFeature(point_feature);
+        }
     });
 
     $scope.$on('interaction', function (event, data) {
-        switch( data.type ) {
+        switch (data.type) {
             case 'draw':
                 drawHandler(data);
                 break;
@@ -208,10 +223,28 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         }
     });
 
+
     $scope.$on('resetDOWN', function (event, data) {
-        vector_layer.getSource().getFeatures().forEach(function (e) {
-            vector_layer.getSource().removeFeature(e);
-        });
+        if (toggleLayer) {
+            removeFeatures(vector_layer);
+        }
+        else {
+            removeFeatures(heatmap_layer);
+        }
+    });
+
+    $scope.$on('heatmap', function (event, data) {
+        toggleLayer = !data.active;
+        if (data.active) {
+            map.addLayer(heatmap_layer);
+            map.removeLayer(vector_layer);
+            removeFeatures(vector_layer)
+        }
+        else {
+            map.addLayer(vector_layer);
+            map.removeLayer(heatmap_layer);
+            removeFeatures(heatmap_layer)
+        }
     });
 
 
@@ -220,7 +253,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      * ----------------------------------------*/
 
     function drawHandler(data) {
-        if(data.active) {
+        if (data.active) {
             map.addInteraction(draw);
             map.removeInteraction(selectPointerMove)
         }
@@ -235,16 +268,22 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         TWEET_DELAY = data.time || 3000;
     }
 
+    function removeFeatures(layer) {
+        layer.getSource().getFeatures().forEach(function (e) {
+            layer.getSource().removeFeature(e);
+        });
+    }
+
     /**
      * ----------------------------------------
      * ----------- SCOPE FUNCTIONS ------------
      * ----------------------------------------
      */
-    $scope.reset = function() {
+    $scope.reset = function () {
         $scope.$emit('reset', {})
     };
 
-    $scope.search = function() {
+    $scope.search = function () {
 
         var hashtag = $scope.hashtag;
         hashtag = hashtag.replace("#", "");
@@ -273,8 +312,8 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         map.getView().fit(geom, {
             duration: 2000,
             nearest: true,
-            callback: function() {
-            draw_source.removeFeature(feature);
+            callback: function () {
+                draw_source.removeFeature(feature);
             }
         });
     }

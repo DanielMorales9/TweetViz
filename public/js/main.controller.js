@@ -64,5 +64,9 @@ app.controller('MainController', ['socket', '$scope', function (socket, $scope) 
         socket.emit('reset', {});
         socket.emit('start', {room: 'map'});
         $scope.$broadcast('resetDOWN', {})
+    });
+
+    $scope.$on('heatmapUP', function (event, data) {
+        $scope.$broadcast('heatmap', data)
     })
 }]);

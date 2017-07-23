@@ -63,6 +63,12 @@
                             <span>Delay</span>&nbsp;
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <button style="float: right;"
+                                ng-class="{'btn btn-secondary' : !toogleHeatMapColor,  'btn btn-success': toogleHeatMapColor}"
+                                type="button" ng-click="toogleHeatMap()"><i class="fa fa-fire"></i>&nbsp;{{toogleHeatMapName}}
+                        </button>
+                    </li>
                 </ul>
             </div>
         </nav>

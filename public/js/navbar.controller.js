@@ -16,6 +16,22 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     };
 
+    $scope.toogleHeatMapColor = true;
+    $scope.toogleHeatMapName = "HeatMap";
+
+    $scope.toogleHeatMap = function () {
+        if(!$scope.toogleHeatMapColor) {
+
+            $scope.toogleHeatMapColor = true;
+            $scope.$emit('heatmapUP', {active: false})
+        }
+        else {
+            $scope.toogleHeatMapColor = false;
+
+            $scope.$emit('heatmapUP', {active: true})
+        }
+    };
+
 
     $('#timeSlider').slider({
         tooltip: 'always',
