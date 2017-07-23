@@ -18,6 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.2.0/ol.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="lib/bootstrap-slider.js"></script>
     <script src="lib/socket.io.slim.js"></script>
@@ -86,45 +87,8 @@
     </div>
 
     <div class="row">
-        <div ng-controller="MapController" id="map" class="col-9" tabindex="0">
-            <div id="searchBar">
-                <div class="input-group" id="searchBox">
-                    <input ng-model="hashtag" placeholder="Search for #job..." type="text" class="form-control" id="input-search" aria-label="...">
-                    <div class="input-group-btn">
-                        <div class="btn-group">
-                            <button ng-click="search()" class="btn btn-primary searchButtons">
-                                <i class="fa fa-search"></i>&nbsp;Search
-                            </button>
-                            <!--button type="button" id="heatmap"
-                                    class="searchButtons btn btn-primary">
-                                <i class="fa fa-fire"></i>&nbsp;HeatMap
-                            </button-->
-                            <button ng-click="reset()" type="button" id="reset"
-                                    class="searchButtons btn btn-danger">
-                                <i class="fa fa-exclamation-circle"></i>&nbsp;Reset
-                            </button>
+        <div class="col-9"  ng-view></div>
 
-                        </div>
-                    </div><!-- /btn-group -->
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-            <div id="status" class="status-show-hide"
-                 ng-model="statusOk"
-                 ng-show="statusOk">
-                <div ng-show="coordsOk">
-                    <span class="coords">Box: </span>
-                    <div class="coords"><span>[{{coords[0][0]}},&nbsp;</span><span>{{coords[0][1]}}]</span></div>
-                    <div class="coords"><span>[{{coords[1][0]}},&nbsp;</span><span>{{coords[1][1]}}]</span></div>
-                </div>
-                <div ng-show="tagsOk">
-                    <span class="tags">Tags: </span>
-                    <div class="tags">
-                        <span>{{tags}}</span></div>
-
-                </div>
-            </div>
-
-        </div>
         <div ng-controller="SideBarController" id="side" class="col-3">
             <nav id="sideHeader" class="navbar navbar-light bg-faded">
                 <div>
