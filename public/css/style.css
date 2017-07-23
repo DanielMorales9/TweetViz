@@ -28,7 +28,6 @@ div#map {
     height: 100%;
     right: 0;
     bottom: 0;
-    padding-left: 0px;
 }
 
 div.tweet {
@@ -232,6 +231,6 @@ button.searchButtons:hover {
     margin: 0 5px;
 }
 
-.ol-zoom {
-    left: 1.5rem;
+.col-9 .col-3{
+    padding-right: 0px;
 }

@@ -12,6 +12,6 @@ app.config(function($routeProvider) {
             templateUrl : "htm/chart.htm"
         })
         .otherwise({
-            redirectTo : "htm/map.htm"
+            redirectTo : "map"
         });
 });
