@@ -1,5 +1,6 @@
 app.controller('ChartController', ['$scope', function ($scope) {
 
+    $scope.spin = true;
     var setup = function (targetID) {
         //Set size of svg element and chart
         var margin = {top: 0, right: 0, bottom: 0, left: 0},
@@ -200,9 +201,11 @@ app.controller('ChartController', ['$scope', function ($scope) {
     //setup (includes first draw)
     var settings = setup('#chart');
 
-    redraw();
     //Repeat every 3 seconds
     setInterval(function () {
+        if ($scope.spin) {
+            $scope.spin = false;
+        }
         redraw()
     }, 3000);
 

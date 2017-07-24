@@ -4,9 +4,15 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
     <div id="everything">
-        <h1>What People Are Posting Right Now</h1>
-        <h2>Top 10 Hashtags </h2>
-        <div id="chart"></div>
+        <div class="topTenHashTitle">
+            <div class="headers">
+                <h1>What People Are Posting Right Now</h1>
+                <h2>Top 10 Hashtags </h2>
+            </div>
+        </div>
+        <div id="chart">
+            <div class="loader" ng-show="spin"></div>
+        </div>
         <h2></h2>
     </div>
 

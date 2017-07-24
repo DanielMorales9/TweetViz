@@ -12,17 +12,17 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     var content;
     var closer;
-        content = angular.element('#popup-content')[0];
-        closer = angular.element('#popup-closer')[0];
+    content = angular.element('#popup-content')[0];
+    closer = angular.element('#popup-closer')[0];
 
-        console.log(content);
-        console.log(closer);
+    console.log(content);
+    console.log(closer);
 
-        closer.onclick = function () {
-            popup.setPosition(undefined);
-            closer.blur();
-            return false;
-        };
+    closer.onclick = function () {
+        popup.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
 
 
 
