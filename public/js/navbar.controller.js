@@ -45,11 +45,9 @@ app.controller('NavBarController', ['$scope', '$location', function ($scope, $lo
 
         targetLNavbar.style.width = width + 'px';
         targetNavbar.style.width = width + 'px';
-
-        if ($location.path() === '/map') {
-            document.getElementById('popup').style.display = '';
-
-
+        var path = $location.path();
+        console.log(path);
+        if (path=== '/map') {
             $('#timeSlider').slider({
                 tooltip: 'always',
                 formatter: function (value) {
@@ -63,9 +61,10 @@ app.controller('NavBarController', ['$scope', '$location', function ($scope, $lo
                 $scope.$emit('interactionUP', {type: "slider", time: evt.value.newValue});
                 $scope.sliderValue = evt.value.newValue / 1000 + " seconds";
             });
+
         }
         else {
-            document.getElementById('popup').style.display = 'none';
+
         }
 
         $("#bigNav").hide();
@@ -93,7 +92,11 @@ app.controller('NavBarController', ['$scope', '$location', function ($scope, $lo
 
         var path = $location.path();
         path = path.replace('/', '');
-        path = 'htm/'+path+'-nav.html';
+        if (path === '') {
+            path = 'htm/map-nav.html';
+        } else {
+            path = 'htm/' + path + '-nav.html';
+        }
         $scope.templateURL = path;
     });
 

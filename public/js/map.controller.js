@@ -9,8 +9,8 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      * Popup Nodes
      * @type {Element}
      */
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
+    var content = angular.element('#popup-content');
+    var closer = angular.element('popup-closer');
 
     var TWEET_DELAY = 3000;
 
@@ -194,6 +194,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      *  -----------------------------------------
      */
     $scope.$on('tweet', function (event, data) {
+        console.log('tweet');
         var point_feature = new ol.Feature();
         var point_geom = new ol.geom.Point(
             data.coordinates.coordinates

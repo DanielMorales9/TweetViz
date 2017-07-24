@@ -9,30 +9,6 @@
     </a>
     <div class="collapse navbar-collapse dual-collapse">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#!/chart"><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;Top
-                    Hashtags</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#!/geochart"><i class="fa fa-globe" aria-hidden="true"></i> Geo Chart</a>
-            </li>
-        </ul>
-    </div>
-    <div class="collapse navbar-collapse dual-collapse">
-        <ul class="navbar-nav">
-            <li ng-show="toogleHeatMapColor" class="nav-item">
-                <div class="buttonMargin">
-                    <input id="timeSlider"
-                           data-slider-id='slider'
-                           type="text"
-                           data-slider-min="1000"
-                           data-slider-max="30000"
-                           data-slider-step="1000"
-                           data-slider-value="3000"/>
-                    <span>Delay: </span>&nbsp;
-                    <span ng-bind="sliderValue"></span>
-                </div>
-            </li>
 
 
             <li class="nav-item">
@@ -48,6 +24,31 @@
                         ng-class="{'btn btn-secondary' : !toogleDrawColor,  'btn btn-primary': toogleDrawColor}"
                         type="button" ng-click="toogleDraw()"><i class="fa fa-pencil"></i>&nbsp;{{toogleDrawName}}
                 </button>
+            </li>
+            <li ng-show="toogleHeatMapColor" class="nav-item">
+                <div class="buttonMargin">
+                    <input id="timeSlider"
+                           data-slider-id='slider'
+                           type="text"
+                           data-slider-min="1000"
+                           data-slider-max="30000"
+                           data-slider-step="1000"
+                           data-slider-value="3000"/>
+                    <span>Delay: </span>&nbsp;
+                    <span ng-bind="sliderValue"></span>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="collapse navbar-collapse dual-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#!/chart"><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;Top
+                    Hashtags</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!/geochart"><i class="fa fa-globe" aria-hidden="true"></i> Geo Chart</a>
             </li>
         </ul>
     </div>
