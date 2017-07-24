@@ -6,6 +6,25 @@
     width:600px;
     height:400px;
 }
+
+.chartFirstTitle{
+    font-size:150%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.chartSecondTitle {
+    font-size: 12px;
+    font-style: italic;
+    color: gray;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+
 .bar{
     fill:#eaeaea;
 }
