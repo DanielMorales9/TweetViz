@@ -1,25 +1,22 @@
-app.controller('ChartController', function ($scope) {
+app.controller('ChartController', ['$scope', function ($scope) {
 
-    console.log('ChartController attivo');
-
-
-    var setup = function(targetID){
+    var setup = function (targetID) {
         //Set size of svg element and chart
         var margin = {top: 0, right: 0, bottom: 0, left: 0},
             width = 600 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom,
-            categoryIndent = 4*15 + 5,
+            categoryIndent = 4 * 15 + 5,
             defaultBarWidth = 2000;
 
         //Set up scales
         var x = d3.scale.linear()
-            .domain([0,defaultBarWidth])
-            .range([0,width]);
+            .domain([0, defaultBarWidth])
+            .range([0, width]);
         var y = d3.scale.ordinal()
             .rangeRoundBands([0, height], 0.1, 0);
 
         //Create SVG element
-        d3.select(targetID).selectAll("svg").remove()
+        d3.select(targetID).selectAll("svg").remove();
         var svg = d3.select(targetID).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -28,27 +25,30 @@ app.controller('ChartController', function ($scope) {
 
         //Package and export settings
         var settings = {
-            margin:margin, width:width, height:height, categoryIndent:categoryIndent,
-            svg:svg, x:x, y:y
-        }
+            margin: margin, width: width, height: height, categoryIndent: categoryIndent,
+            svg: svg, x: x, y: y
+        };
         return settings;
-    }
+    };
 
-    var redrawChart = function(targetID, newdata) {
+    var redrawChart = function (newdata) {
 
         //Import settings
-        var margin=settings.margin, width=settings.width, height=settings.height, categoryIndent=settings.categoryIndent,
-            svg=settings.svg, x=settings.x, y=settings.y;
+        var margin = settings.margin, width = settings.width, height = settings.height,
+            categoryIndent = settings.categoryIndent,
+            svg = settings.svg, x = settings.x, y = settings.y;
 
         //Reset domains
-        y.domain(newdata.sort(function(a,b){
+        y.domain(newdata.sort(function (a, b) {
             return b.value - a.value;
         })
-            .map(function(d) { return d.key; }));
-        var barmax = d3.max(newdata, function(e) {
+            .map(function (d) {
+                return d.key;
+            }));
+        var barmax = d3.max(newdata, function (e) {
             return e.value;
         });
-        x.domain([0,barmax]);
+        x.domain([0, barmax]);
 
         /////////
         //ENTER//
@@ -58,7 +58,9 @@ app.controller('ChartController', function ($scope) {
 
         //Create chart row and move to below the bottom of the chart
         var chartRow = svg.selectAll("g.chartRow")
-            .data(newdata, function(d){ return d.key});
+            .data(newdata, function (d) {
+                return d.key
+            });
         var newRow = chartRow
             .enter()
             .append("g")
@@ -67,32 +69,38 @@ app.controller('ChartController', function ($scope) {
 
         //Add rectangles
         newRow.insert("rect")
-            .attr("class","bar")
+            .attr("class", "bar")
             .attr("x", 0)
-            .attr("opacity",0)
+            .attr("opacity", 0)
             .attr("height", y.rangeBand())
-            .attr("width", function(d) { return x(d.value);})
+            .attr("width", function (d) {
+                return x(d.value);
+            });
 
         //Add value labels
         newRow.append("text")
-            .attr("class","label")
-            .attr("y", y.rangeBand()/2)
-            .attr("x",0)
-            .attr("opacity",0)
-            .attr("dy",".35em")
-            .attr("dx","0.5em")
-            .text(function(d){return d.value;});
+            .attr("class", "label")
+            .attr("y", y.rangeBand() / 2)
+            .attr("x", 0)
+            .attr("opacity", 0)
+            .attr("dy", ".35em")
+            .attr("dx", "0.5em")
+            .text(function (d) {
+                return d.value;
+            });
 
         //Add Headlines
         newRow.append("text")
-            .attr("class","category")
-            .attr("text-overflow","ellipsis")
-            .attr("y", y.rangeBand()/2)
-            .attr("x",categoryIndent)
-            .attr("opacity",0)
-            .attr("dy",".35em")
-            .attr("dx","0.5em")
-            .text(function(d){return d.key});
+            .attr("class", "category")
+            .attr("text-overflow", "ellipsis")
+            .attr("y", y.rangeBand() / 2)
+            .attr("x", categoryIndent)
+            .attr("opacity", 0)
+            .attr("dy", ".35em")
+            .attr("dx", "0.5em")
+            .text(function (d) {
+                return d.key
+            });
 
 
         //////////
@@ -102,16 +110,18 @@ app.controller('ChartController', function ($scope) {
         //Update bar widths
         chartRow.select(".bar").transition()
             .duration(300)
-            .attr("width", function(d) { return x(d.value);})
-            .attr("opacity",1);
+            .attr("width", function (d) {
+                return x(d.value);
+            })
+            .attr("opacity", 1);
 
         //Update data labels
         chartRow.select(".label").transition()
             .duration(300)
-            .attr("opacity",1)
-            .tween("text", function(d) {
-                var i = d3.interpolate(+this.textContent.replace(/\,/g,''), +d.value);
-                return function(t) {
+            .attr("opacity", 1)
+            .tween("text", function (d) {
+                var i = d3.interpolate(+this.textContent.replace(/\,/g, ''), +d.value);
+                return function (t) {
                     this.textContent = Math.round(i(t));
                 };
             });
@@ -119,7 +129,7 @@ app.controller('ChartController', function ($scope) {
         //Fade in categories
         chartRow.select(".category").transition()
             .duration(300)
-            .attr("opacity",1);
+            .attr("opacity", 1);
 
 
         ////////
@@ -128,65 +138,73 @@ app.controller('ChartController', function ($scope) {
 
         //Fade out and remove exit elements
         chartRow.exit().transition()
-            .style("opacity","0")
+            .style("opacity", "0")
             .attr("transform", "translate(0," + (height + margin.top + margin.bottom) + ")")
             .remove();
-
 
         ////////////////
         //REORDER ROWS//
         ////////////////
 
-        var delay = function(d, i) { return 200 + i * 30; };
+        var delay = function (d, i) {
+            return 200 + i * 30;
+        };
 
         chartRow.transition()
             .delay(delay)
             .duration(900)
-            .attr("transform", function(d){ return "translate(0," + y(d.key) + ")"; });
+            .attr("transform", function (d) {
+                return "translate(0," + y(d.key) + ")";
+            });
     };
 
+    function findElement(arr, propName, propValue) {
+        for (var i=0; i < arr.length; i++)
+            if (arr[i][propName] == propValue)
+                return i;
 
-
-//Pulls data
-//Since our data is fake, adds some random changes to simulate a data stream.
-//Uses a callback because d3.json loading is asynchronous
-    var pullData = function(settings,callback){
-        d3.json("fakeData.json", function (err, data){
-            if (err) return console.warn(err);
-
-            var newData = data;
-            data.forEach(function(d,i){
-                var newValue = d.value + Math.floor((Math.random()*10) - 5)
-                newData[i].value = newValue <= 0 ? 10 : newValue
-            })
-
-            newData = formatData(newData);
-
-            callback(settings,newData);
-        })
+        // will return undefined if not found; you could return a default instead
     }
 
-//Sort data in descending order and take the top 10 values
-    var formatData = function(data){
+    var hashtag = [];
+
+    //Pulls data
+    //Since our data is fake, adds some random changes to simulate a data stream.
+    //Uses a callback because d3.json loading is asynchronous
+    $scope.$on('tweet', function (event, data) {
+        var hashs = data.text.match(/(^#|[^&]#)([a-z0-9]+)/gi);
+        if(hashs)
+            hashs.forEach(function (t, i) {
+            t = t.replace(">", "");
+            i = findElement(hashtag, 'key', t);
+            if (i)
+                hashtag[i].value++;
+            else {
+                hashtag.push({key: t, value: 1})
+            }
+        });
+    });
+
+    //Sort data in descending order and take the top 10 values
+    var formatData = function (data) {
         return data.sort(function (a, b) {
             return b.value - a.value;
-        })
-            .slice(0, 10);
-    }
+        }).slice(0, 10);
+    };
 
-//I like to call it what it does
-    var redraw = function(settings){
-        pullData(settings,redrawChart)
-    }
+    //I like to call it what it does
+    var redraw = function () {
+        redrawChart(formatData(hashtag));
+    };
 
-//setup (includes first draw)
+    //setup (includes first draw)
     var settings = setup('#chart');
-    redraw(settings)
 
-//Repeat every 3 seconds
-    setInterval(function(){
-        redraw(settings)
+    redraw();
+    //Repeat every 3 seconds
+    setInterval(function () {
+        redraw()
     }, 3000);
-    
 
-});
+
+}]);

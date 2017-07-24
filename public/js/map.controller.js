@@ -182,7 +182,7 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
         console.log(prj_ext);
         $scope.$emit('bbox', {locations: prj_ext.join(",")});
-        if(toggleLayer)
+        if (toggleLayer)
             map.addInteraction(selectPointerMove);
         map.removeInteraction(draw);
         removeLayerFeatures()
@@ -194,12 +194,12 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      *  -----------------------------------------
      */
     $scope.$on('tweet', function (event, data) {
-            var point_feature = new ol.Feature();
-            var point_geom = new ol.geom.Point(
-                data.coordinates.coordinates
-            );
-            point_feature.setGeometry(point_geom);
-            point_feature.getGeometry().transform(current_projection, new_projection);
+        var point_feature = new ol.Feature();
+        var point_geom = new ol.geom.Point(
+            data.coordinates.coordinates
+        );
+        point_feature.setGeometry(point_geom);
+        point_feature.getGeometry().transform(current_projection, new_projection);
         if (toggleLayer) {
             point_feature.setId(data.id);
             tweets[data.id] = data;
@@ -234,9 +234,11 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
 
     $scope.$on('resetDOWN', function (event, data) {
         removeLayerFeatures();
-        map.getView().animate({center: [0, 0],
+        map.getView().animate({
+            center: [0, 0],
             zoom: 2,
-            duration: 1000});
+            duration: 1000
+        });
     });
 
     $scope.$on('heatmap', function (event, data) {
