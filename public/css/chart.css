@@ -23,19 +23,16 @@
     margin-bottom:5px;
 }
 
-
-.bar{
-    fill:#eaeaea;
-}
 text.label{
-    fill: #777777;
-    color: #777777;
+    fill: #f5f5f5;
+    color: #f5f5f5;
     font-size: 20px;
     font-weight: bold;
 }
 text.category{
-    fill: #666666;
-    font-size: 14px;
+    fill: #000000;
+    font-size: 18px;
+
 }
 
 .loader {

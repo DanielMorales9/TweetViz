@@ -1,5 +1,9 @@
 app.controller('ChartController', ['$scope', function ($scope) {
 
+    var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+    function colors(n) {
+        return colores_g[n % colores_g.length];
+    }
     $scope.spin = true;
     var setup = function (targetID) {
         //Set size of svg element and chart
@@ -10,7 +14,6 @@ app.controller('ChartController', ['$scope', function ($scope) {
             defaultBarWidth = 2000;
 
         //Set up scales
-        console.log(d3);
         var x = d3.scale.linear()
             .domain([0, defaultBarWidth])
             .range([0, width]);
@@ -66,6 +69,9 @@ app.controller('ChartController', ['$scope', function ($scope) {
         var newRow = chartRow
             .enter()
             .append("g")
+            .style('fill', function(d, i) {
+                return colors(i);
+            })
             .attr("class", "chartRow")
             .attr("transform", "translate(0," + height + margin.top + margin.bottom + ")");
 
@@ -177,7 +183,7 @@ app.controller('ChartController', ['$scope', function ($scope) {
         var hashs = data.text.match(/(^#|[^&]#)([a-z0-9]+)/gi);
         if(hashs)
             hashs.forEach(function (t, i) {
-            t = t.replace(">", "");
+            t = t.replace(">", "").toLowerCase();
             i = findElement(hashtag, 'key', t);
             if (i)
                 hashtag[i].value++;
