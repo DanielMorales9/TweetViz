@@ -1,15 +1,11 @@
-app.controller('NavBarController', ['$scope', function ($scope) {
+app.controller('NavBarController', ['$scope', '$location', function ($scope, $location) {
 
-
-    var targetNavbar = document.getElementById("bigNav");
-    var targetLNavbar = document.getElementById("littleNav");
-    var offSetWidthMap = document.getElementById("side").clientWidth;
-    offSetWidthMap = targetLNavbar.clientWidth-offSetWidthMap;
-    targetLNavbar.style.width = offSetWidthMap + 'px';
-    targetNavbar.style.width = offSetWidthMap + 'px';
+    $scope.templateURL = "htm/map-nav.html";
 
     $scope.toogleDrawColor = true;
     $scope.toogleDrawName = "Draw";
+
+    var width;
 
     $scope.toogleDraw = function () {
         if (!$scope.toogleDrawColor) {
@@ -40,27 +36,66 @@ app.controller('NavBarController', ['$scope', function ($scope) {
         }
     };
 
+    $scope.init = function() {
 
-    $('#timeSlider').slider({
-        tooltip: 'always',
-        formatter: function (value) {
-            return value / 1000 + ' seconds';
+        var targetNavbar = document.getElementById("bigNav");
+        var targetLNavbar = document.getElementById("littleNav");
+        var offSetWidthMap = document.getElementById("side").clientWidth;
+        width = width || (window.innerWidth-offSetWidthMap);
+
+        targetLNavbar.style.width = width + 'px';
+        targetNavbar.style.width = width + 'px';
+
+        if ($location.path() === '/map') {
+            document.getElementById('popup').style.display = '';
+
+
+            $('#timeSlider').slider({
+                tooltip: 'always',
+                formatter: function (value) {
+                    return value / 1000 + ' seconds';
+                }
+            });
+
+            $scope.sliderValue = "3 seconds";
+
+            $('#timeSlider').on('change', function (evt) {
+                $scope.$emit('interactionUP', {type: "slider", time: evt.value.newValue});
+                $scope.sliderValue = evt.value.newValue / 1000 + " seconds";
+            });
         }
-    });
+        else {
+            document.getElementById('popup').style.display = 'none';
+        }
 
-    $scope.sliderValue = "3 seconds";
+        $("#bigNav").hide();
 
-    $('#timeSlider').on('change', function (evt) {
-        $scope.$emit('interactionUP', {type: "slider", time: evt.value.newValue})
-        $scope.sliderValue = evt.value.newValue / 1000 + " seconds";
-    });
+        $("#littleNav").hover(function () {
+            $("#bigNav").show();
+        }, function () {
 
-    
+        });
+        $("#bigNav").hover(function(){
+
+        }, function () {
+            $("#bigNav").hide();
+        });
+
+    };
+
     /**
      * ---------------------------------------------
      * ------------ EVENT LISTENERS ----------------
      * ---------------------------------------------
      */
+
+    $scope.$on('$locationChangeSuccess', function(event, data) {
+
+        var path = $location.path();
+        path = path.replace('/', '');
+        path = 'htm/'+path+'-nav.html';
+        $scope.templateURL = path;
+    });
 
     $scope.$on('bboxDOWN', function (event, data) {
         if ($scope.toogleStreamName = 'Restart') {
