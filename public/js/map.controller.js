@@ -9,8 +9,22 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      * Popup Nodes
      * @type {Element}
      */
-    var content = angular.element('#popup-content');
-    var closer = angular.element('popup-closer');
+
+    var content;
+    var closer;
+        content = angular.element('#popup-content')[0];
+        closer = angular.element('#popup-closer')[0];
+
+        console.log(content);
+        console.log(closer);
+
+        closer.onclick = function () {
+            popup.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
+
 
     var TWEET_DELAY = 3000;
 
@@ -139,11 +153,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      * ------------- MAP LISTENERS -----------------
      * ---------------------------------------------
      */
-    closer.onclick = function () {
-        popup.setPosition(undefined);
-        closer.blur();
-        return false;
-    };
 
     selectPointerMove.on('select', function (e) {
         var coordinate = e.mapBrowserEvent.coordinate;
@@ -180,7 +189,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
         fitExtent(feature, geom);
 
         var prj_ext = ol.proj.transformExtent(ext, new_projection, current_projection);
-        console.log(prj_ext);
         $scope.$emit('bbox', {locations: prj_ext.join(",")});
         if (toggleLayer)
             map.addInteraction(selectPointerMove);
@@ -194,7 +202,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
      *  -----------------------------------------
      */
     $scope.$on('tweet', function (event, data) {
-        console.log('tweet');
         var point_feature = new ol.Feature();
         var point_geom = new ol.geom.Point(
             data.coordinates.coordinates
