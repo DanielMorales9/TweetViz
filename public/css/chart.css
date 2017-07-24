@@ -3,6 +3,27 @@
     width:600px;
     height:400px;
 }
+
+#everything {
+    top: 0;
+}
+
+.chartFirstTitle{
+    font-size:150%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.chartSecondTitle {
+    font-size: 12px;
+    font-style: italic;
+    color: gray;
+    margin-bottom:5px;
+}
+
+
 .bar{
     fill:#eaeaea;
 }
@@ -26,6 +47,8 @@ text.category{
     animation: spin 2s linear infinite;
     margin-top: 3rem;
     margin-left: 30rem;
+    position: absolute;
+    z-index: 5;
 }
 
 @keyframes spin {

@@ -1,4 +1,3 @@
-
 function streamGeoDataOnPort(port) {
     var colors = d3.scale.category20();
     var map = worldMap('#map', colors);

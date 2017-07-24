@@ -10,6 +10,7 @@ app.controller('ChartController', ['$scope', function ($scope) {
             defaultBarWidth = 2000;
 
         //Set up scales
+        console.log(d3);
         var x = d3.scale.linear()
             .domain([0, defaultBarWidth])
             .range([0, width]);
@@ -199,15 +200,17 @@ app.controller('ChartController', ['$scope', function ($scope) {
     };
 
     //setup (includes first draw)
-    var settings = setup('#chart');
+    var settings;
 
-    //Repeat every 3 seconds
-    setInterval(function () {
-        if ($scope.spin) {
+    $scope.init = function () {
+        settings = setup('#chart');
+        //Repeat every 3 seconds
+        setInterval(function () {
             $scope.spin = false;
-        }
-        redraw()
-    }, 3000);
+            redraw()
+
+        }, 2000);
+    };
 
 
 }]);

@@ -1,6 +1,8 @@
 app.controller('GeobarchartController', ['$scope', function ($scope){
 
-
+    $scope.$on('tweet', function (event, data) {
+        console.log(event,data);
+    });
     function countryCountBarChart(barChartSelector, colors) {
         var countryCount = {};
         var width = 1150;
