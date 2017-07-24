@@ -15,9 +15,6 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
     content = angular.element('#popup-content')[0];
     closer = angular.element('#popup-closer')[0];
 
-    console.log(content);
-    console.log(closer);
-
     closer.onclick = function () {
         popup.setPosition(undefined);
         closer.blur();
@@ -263,6 +260,10 @@ app.controller('MapController', ['socket', '$scope', function (socket, $scope) {
             map.addInteraction(selectPointerMove);
             removeFeatures(heatmap_layer);
         }
+    });
+
+    $scope.$on('stop', function (event, data) {
+        console.log("stop")
     });
 
 

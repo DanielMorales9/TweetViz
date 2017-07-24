@@ -46,7 +46,6 @@ app.controller('NavBarController', ['$scope', '$location', function ($scope, $lo
         targetLNavbar.style.width = width + 'px';
         targetNavbar.style.width = width + 'px';
         var path = $location.path();
-        console.log(path);
         if (path=== '/map') {
             $('#timeSlider').slider({
                 tooltip: 'always',
