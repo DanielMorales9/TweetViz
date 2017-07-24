@@ -1,0 +1,47 @@
+body {
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+svg {
+    border: 1px solid #aaa;
+}
+
+.land {
+    fill: #eee;
+}
+
+h1 {
+    font-size:150%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 12px;
+    font-style: italic;
+    color: gray;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#everything{
+    width:600px;
+    margin:20px;
+}
+
+.boundary {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: .5px;
+}
+
+.point {
+    opacity: 0.3;
+}
+
+.radar-ping {
+    fill: none;
+}

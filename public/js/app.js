@@ -4,6 +4,7 @@
 var app = angular.module('tweetviz', ['ngAnimate' , 'ngRoute']);
 
 app.config(function($routeProvider) {
+
     $routeProvider
         .when("/map", {
             templateUrl : "htm/map.htm"
@@ -11,7 +12,11 @@ app.config(function($routeProvider) {
         .when("/chart", {
             templateUrl : "htm/chart.htm"
         })
+        .when("/geochart", {
+            templateUrl : "htm/geochart.htm"
+        })
         .otherwise({
             redirectTo : "map"
         });
+
 });
