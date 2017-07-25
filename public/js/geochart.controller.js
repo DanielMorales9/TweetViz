@@ -1,11 +1,13 @@
 app.controller('GeobarchartController', ['$scope', function ($scope){
 
     console.log('geobarchart');
+    $scope.spin = true;
 
     var colors = d3.scale.category20();
     var barChart = countryCountBarChart('#bar-chart', colors);
     $scope.$on('tweet', function (event, data) {
-
+        if($scope.spin)
+            $scope.spin = false;
         addGeoData(data);
 
     });
