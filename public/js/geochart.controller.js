@@ -1,11 +1,23 @@
 app.controller('GeobarchartController', ['$scope', function ($scope){
 
+    console.log('geobarchart');
+
+    var colors = d3.scale.category20();
+    var barChart = countryCountBarChart('#bar-chart', colors);
     $scope.$on('tweet', function (event, data) {
-        console.log(event,data);
+
+        addGeoData(data);
+
     });
+
+    function addGeoData(geoData) {
+        barChart.addGeoData(geoData);
+    }
+
+
     function countryCountBarChart(barChartSelector, colors) {
         var countryCount = {};
-        var width = 1150;
+        var width = 1000;
         var height = 250;
         var transitionDuration = 500;
         var exitTransitionDuration = 500;
@@ -172,7 +184,7 @@ app.controller('GeobarchartController', ['$scope', function ($scope){
         };
 
         function addGeoData(data) {
-            updateCountryCount(data.countryCode);
+            updateCountryCount(data.place.country_code);
         }
 
         function updateCountryCount(countryCode) {
