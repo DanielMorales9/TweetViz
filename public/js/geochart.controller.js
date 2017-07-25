@@ -19,7 +19,10 @@ app.controller('GeobarchartController', ['$scope', function ($scope){
 
     function countryCountBarChart(barChartSelector, colors) {
         var countryCount = {};
-        var width = 1000;
+
+        var offSetWidthMap = document.getElementById("side").clientWidth;
+        var width = width || (window.innerWidth-offSetWidthMap);
+
         var height = 250;
         var transitionDuration = 500;
         var exitTransitionDuration = 500;
